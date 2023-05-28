@@ -1,8 +1,9 @@
+import Registerlogin from "./components/Registerlogin"
 
 const App = () => {
   return (
-    <div >
-      CONCERT HUB
+    <div className="page">
+      <Registerlogin/>
     </div>
   )
 }
