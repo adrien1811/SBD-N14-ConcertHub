@@ -10,7 +10,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: azure;
+    background-image: url("./components/concertwpp.jpg");
+    background-repeat: no-repeat;
+    background-size: cover
 }
 
 .or-text {
@@ -18,7 +20,7 @@
 }
 
 .logincover {
-    background-color:white ;
+    background-color:rgb(162, 199, 240) ;
     width: 30em;
     height: 35em;
     position: relative;
@@ -50,7 +52,7 @@ input:focus{
     height: 1.5em;
     justify-content: center;
     text-align: center;
-    background-color: grey;
+    background-color: white;
     border-radius: 2em;
 }
 
@@ -62,7 +64,7 @@ input:focus{
     height: 1.5em;
     justify-content: center;
     text-align: center;
-    background-color: grey;
+    background-color: white;
     border-radius: 2em;
 }
 
