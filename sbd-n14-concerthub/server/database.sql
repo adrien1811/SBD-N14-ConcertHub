@@ -13,8 +13,9 @@ CREATE TABLE USERR(
     password varchar(50) NOT NULL,
     email varchar(50) NOT NULL,
     no_telpon bigint NOT NULL,
-    balance_BCA int NOT NULL,
-    balance_GOPAY int NOT NULL,
+    balance_BCA int,
+    balance_GOPAY int,
+    order_id int
 );
 
 CREATE TABLE ORDER_TICKET(

@@ -11,7 +11,6 @@ app.use(cors());
 app.use(express.json());
 
 //routers
-
 //router for register
 app.post('/register', async (req, res) => {
   try {
@@ -25,7 +24,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-//bismillah bisa login
+//routers for login
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
