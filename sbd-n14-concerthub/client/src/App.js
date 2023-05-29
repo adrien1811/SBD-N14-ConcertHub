@@ -1,9 +1,13 @@
-import Registerlogin from "./components/Registerlogin"
+import Registerlogin from "./Registerlogin"
+import Navibar from "./components/Navibar"
 
 const App = () => {
   return (
+    <div>
+      <Navibar/>
     <div className="page">
       <Registerlogin/>
+    </div>
     </div>
   )
 }
