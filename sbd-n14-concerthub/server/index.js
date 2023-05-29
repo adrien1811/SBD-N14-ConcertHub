@@ -10,7 +10,7 @@ const bcrypt = require("bcrypt");
 app.use(cors());
 app.use(express.json());
 
-//routers
+//router
 //router for register
 app.post('/register', async (req, res) => {
   try {
