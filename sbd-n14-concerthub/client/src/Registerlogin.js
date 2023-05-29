@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import "./Registerlogin.css"
+
 const Registerlogin = () => {
 
     const [popupStyle, showpopup] = useState("hide")

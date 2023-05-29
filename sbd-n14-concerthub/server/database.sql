@@ -41,7 +41,7 @@ CREATE TABLE KONSER(
     kapasitas int NOT NULL,
     kapasitas_privillege int NOT NULL,
     review_id serial UNIQUE NOT NULL,
-    rating int NOT NULL,
+    rating Value Decimal(2, 1) NOT NULL,
     komen varchar(50),
     review_date date NOT NULL
 );
@@ -50,13 +50,13 @@ CREATE TABLE PERFORMER(
     performer_id serial UNIQUE NOT NULL PRIMARY KEY,
     nama_performer varchar(50) NOT NULL,
     album varchar  NOT NULL,
-    deskripsi varchar(50) NOT NULL
+    deskripsi Text NOT NULL
 );
 
 CREATE TABLE REVIEW(
     review_id serial UNIQUE NOT NULL PRIMARY KEY,
-    konser_id serial UNIQUE NOT NULL,
+    konser_id int NOT NULL,
     rating int NOT NULL,
-    komen varchar(50),
+    komen Text,
     review_date date NOT NULL
 );
