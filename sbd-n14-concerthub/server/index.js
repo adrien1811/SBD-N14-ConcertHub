@@ -81,8 +81,8 @@ app.get('/getorder', async (req, res) => {
 
 app.get('/getkonser', async (req, res) => {
   try{
-    const allOrder = await pool.query("SELECT * FROM konserT");
-    res.json(allOrder.rows);
+    const allKonser = await pool.query("SELECT * FROM konser");
+    res.json(allKonser.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -90,8 +90,8 @@ app.get('/getkonser', async (req, res) => {
 
 app.get('/getperformer', async (req, res) => {
   try{
-    const allOrder = await pool.query("SELECT * FROM performer");
-    res.json(allOrder.rows);
+    const allPerform = await pool.query("SELECT * FROM performer");
+    res.json(allPerform.rows);
   } catch (err) {
     console.error(err.message);
   }
@@ -99,8 +99,8 @@ app.get('/getperformer', async (req, res) => {
 
 app.get('/getreview', async (req, res) => {
   try{
-    const allOrder = await pool.query("SELECT * FROM review");
-    res.json(allOrder.rows);
+    const allReview = await pool.query("SELECT * FROM review");
+    res.json(allReview.rows);
   } catch (err) {
     console.error(err.message);
   }
