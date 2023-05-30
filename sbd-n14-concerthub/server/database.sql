@@ -59,10 +59,21 @@ VALUES (4, 'Westlife', 4, '2024-5-5', 'Surabaya', 'Balai Budaya', 40000, 4200, '
 
 CREATE TABLE PERFORMER(
     performer_id serial UNIQUE NOT NULL PRIMARY KEY,
-    nama_performer varchar(50) NOT NULL,
+    nama_performer varchar(500) NOT NULL,
     album varchar  NOT NULL,
-    deskripsi Text NOT NULL
+    deskripsi varchar(500) NOT NULL
 );
+INSERT INTO PERFORMER (performer_id, nama_performer, album, deskripsi) 
+VALUES (1, 'Christ Martin,Jonny Buckland, Guy Berryman, Will Champion', 'Music of the Spheres', 'Coldplay are a British rock band formed in London in 1997. They consist of vocalist and pianist Chris Martin, guitarist Jonny Buckland, bassist Guy Berryman, drummer Will Champion and creative director Phil Harvey.[a] They met at University College London and began playing music together from 1997 to 1998, initially calling themselves Big Fat Noises and later Starfish. They signed to Parlophone records in 1999, and renamed themselves Coldplay in 2000.');
+
+INSERT INTO PERFORMER (performer_id, nama_performer, album, deskripsi)
+VALUES (2, 'Bruno Major', 'To Let A Good Thing Die', 'Bruno Major is a British singer-songwriter from Northampton, England. He has released three albums and seven extended plays. He is signed to the label New Brand Records. He has been described as a "singer-songwriter who is a master of the ballad" by The Guardian.');
+
+INSERT INTO PERFORMER (performer_id, nama_performer, album, deskripsi)
+VALUES (3, 'Rex Orange Country', 'Who Cares?', 'With a unique musical style that blends elements of hip-hop, jazz, and bedroom pop, Rex Orange Countys music is characterized by its bright and captivating sound. His compositions often feature introspective and relatable lyrics, delivered with heartfelt vocals. Rex Orange Countys music has resonated with a wide audience, drawing acclaim from fans and critics alike.');
+
+INSERT INTO PERFORMER (performer_id, nama_performer, album, deskripsi)
+VALUES (4, 'Westlife', 'Coast to coas','Westlife are an Irish pop vocal group, which formed in 1998 in Dublin, disbanded in 2012 and reunited in 2018. They were originally signed by Simon Cowell in the UK, Clive Davis in the US and managed by Louis Walsh and Sonny Takhar. The group currently consists of Shane Filan, Mark Feehily, Kian Egan, and Nicky Byrne.');
 
 CREATE TABLE REVIEW(
     review_id serial UNIQUE NOT NULL PRIMARY KEY,

@@ -127,6 +127,6 @@ app.get('/getuser', async (req, res) => {
   }
 });
 
-app.listen(4200, () => {
+app.listen(4700, () => {
   console.log("Server is running on port 4700");
 });
