@@ -15,7 +15,7 @@ app.use(express.json());
 app.post('/register', async (req, res) => {
   try {
     const { status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY} = req.body;
-    const REGISTER = await pool.query("INSERT INTO USERR (status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY, order_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id", [status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY]);
+    const REGISTER = await pool.query("INSERT INTO USERR (status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id", [status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY]);
     const insertedUserId = REGISTER.rows[0].user_id;
     res.json({ user_id: insertedUserId });
   } catch (err) {
@@ -64,9 +64,27 @@ app.post('/order', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+//Route Review (Update belum dipakai)
+app.post('/review', async (req, res) => {
+  try {
+    const { konser_id, rating, komen, review_date } = req.body;
+    const REGISTER = await pool.query("INSERT INTO review (konser_id, rating, komen, review_date) VALUES ($1, $2, $3, $4) RETURNING review_id", [konser_id, rating, komen, review_date]);
 
+    const insertedReviewId = REGISTER.rows[0].review_id;
 
-
+    pool.query("UPDATE KONSER SET rating = (SELECT AVG(rating) FROM REVIEW WHERE konser_id = $1) WHERE konser_id = $1", [konser_id])
+      .then(() => {
+        res.json({ review_id: insertedReviewId });
+      })
+      .catch((error) => {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 //Route Review (Update belum dipakai)
 app.post('/review', async (req, res) => {
   try {
@@ -117,6 +135,52 @@ app.get('/getreview', async (req, res) => {
   }
 });
 
+// Route for topping up balance_GOPAY
+app.put('/topup/gopay/:user_id', async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const { topUpAmount } = req.body;
+
+    // Fetch the current balance_GOPAY from the database
+    const user = await pool.query("SELECT balance_GOPAY FROM USERR WHERE user_id = $1", [user_id]);
+    const currentBalance = parseInt(user.rows[0].balance_GOPAY); // Parse the value as an integer
+
+    // Calculate the new balance
+    const newBalance = currentBalance + parseInt(topUpAmount); // Parse the value as an integer
+
+    // Update the balance_GOPAY in the database
+    await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [newBalance, user_id]);
+
+    res.json({ message: 'Balance topped up successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route for topping up balance_BCA
+app.put('/topup/bca/:user_id', async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const { topUpAmount } = req.body;
+
+    // Fetch the current balance_BCA from the database
+    const user = await pool.query("SELECT balance_BCA FROM USERR WHERE user_id = $1", [user_id]);
+    const currentBalance = user.rows[0].balance_BCA;
+
+    // Calculate the new balance
+    const newBalance = currentBalance + topUpAmount;
+
+    // Update the balance_BCA in the database
+    await pool.query("UPDATE USERR SET balance_BCA = $1 WHERE user_id = $2", [newBalance, user_id]);
+
+    res.json({ message: 'Balance topped up successfully' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 //ngetes getuser
 app.get('/getuser', async (req, res) => {
   try{
@@ -127,6 +191,9 @@ app.get('/getuser', async (req, res) => {
   }
 });
 
-app.listen(4700, () => {
+
+
+app.listen(4500, () => {
   console.log("Server is running on port 4700");
 });
+
