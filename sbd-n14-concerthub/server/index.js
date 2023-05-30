@@ -72,9 +72,17 @@ app.post('/review', async (req, res) => {
   try {
     const { konser_id, rating, komen, review_date } = req.body;
     const REGISTER = await pool.query("INSERT INTO review (konser_id, rating, komen, review_date) VALUES ($1, $2, $3, $4) RETURNING review_id", [konser_id, rating, komen, review_date]);
-    const UPDATE = await pool.query("UPDATE KONSER SET rating = (SELECT AVG(rating) FROM REVIEW WHERE konser_id = $1) WHERE konser_id = $1", [konser_id])
-    const insertedReviewId = REGISTER.rows[0].Review_id;
-    res.json({ review_id: insertedReviewId });
+
+    const insertedReviewId = REGISTER.rows[0].review_id;
+
+    pool.query("UPDATE KONSER SET rating = (SELECT AVG(rating) FROM REVIEW WHERE konser_id = $1) WHERE konser_id = $1", [konser_id])
+      .then(() => {
+        res.json({ review_id: insertedReviewId });
+      })
+      .catch((error) => {
+        console.error(error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+      });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -130,3 +138,4 @@ app.get('/getuser', async (req, res) => {
 app.listen(4700, () => {
   console.log("Server is running on port 4700");
 });
+
