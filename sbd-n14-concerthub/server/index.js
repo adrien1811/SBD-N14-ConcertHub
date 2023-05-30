@@ -96,11 +96,11 @@ app.post('/order', async (req, res) => {
       } else {
       res.status(403).json({ error: 'Unauthorized: Only privileged users can choose jenis_accomodation.' });
       }
-      } catch (err) {
+  } catch (err) {
       console.error(err.message);
       res.status(500).json({ error: 'Internal Server Error' });
       }
-      });
+  });
       
 
 //Route Review
