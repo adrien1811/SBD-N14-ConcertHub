@@ -46,14 +46,25 @@ app.post('/login', async (req, res) => {
 app.post('/order', async (req, res) => {
   try {
     const { User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran } = req.body;
-    const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran]);
-    const insertedOrderId = REGISTER.rows[0].order_id;
-    res.json({ order_id: insertedOrderId });
+
+    // Fetch the user's status from the database
+    const user = await pool.query("SELECT status_user FROM userr WHERE user_id = $1", [User_id]);
+    const userStatus = user.rows[0].status_user;
+
+    // Check if the user's status allows choosing the jenis_accomodation
+    if (userStatus === 'privillege') {
+      const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran]);
+      const insertedOrderId = REGISTER.rows[0].order_id;
+      res.json({ order_id: insertedOrderId });
+    } else {
+      res.status(403).json({ error: 'Unauthorized: Only privileged users can choose jenis_accomodation.' });
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 //Route Review (Update belum dipakai)
 app.post('/review', async (req, res) => {
@@ -115,6 +126,6 @@ app.get('/getuser', async (req, res) => {
   }
 });
 
-app.listen(4900, () => {
-  console.log("Server is running on port 4900");
+app.listen(4400, () => {
+  console.log("Server is running on port 4700");
 });
