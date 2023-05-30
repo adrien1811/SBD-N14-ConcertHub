@@ -9,9 +9,10 @@ function Navibar() {
           <Navbar.Brand href="#home">
             <img
               alt=""
-              src="../logo192.png"
+              src="../concerlogo.png"
               width="30"
-              height="30"
+              height=""
+              scale
               className="d-inline-block align-top"
             />{' '}
             ConcertHub

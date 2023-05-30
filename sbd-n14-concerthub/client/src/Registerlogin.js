@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Form from 'react-bootstrap/Form';
 import "./Registerlogin.css"
 
 const Registerlogin = () => {
@@ -24,6 +25,14 @@ const Registerlogin = () => {
         <input type="text" placeholder="Email" />
         <input type="password" placeholder="password" />
         <input type="int" placeholder="nomor telepon" />
+        
+        <div className="form_select">  
+        <Form.Select  aria-label="jenis akun" >
+          <option>Jenis akun</option>
+          <option value="normal">Normal</option>
+          <option value="privilege">Privilege</option>
+        </Form.Select>
+        </div>
 
         <div className="registerbutton">Register</div>
 

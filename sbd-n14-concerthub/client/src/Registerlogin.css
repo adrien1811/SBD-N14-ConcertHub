@@ -3,18 +3,6 @@
     box-sizing: border-box;
 }
 
-
-.page {
-    height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: url("./components/concertwpp.jpg");
-    background-repeat: no-repeat;
-    background-size: cover
-}
-
 .or-text {
     opacity: 0.3;
 }
@@ -22,7 +10,7 @@
 .logincover {
     background-color:rgb(162, 199, 240) ;
     width: 30em;
-    height: 35em;
+    height: 40em;
     position: relative;
     border-radius: 2em;
     box-shadow: 0 0.188em 1.550em rgb(100, 156, 156);
@@ -36,9 +24,9 @@
 input{
     border: none;
     background-color: azure;
-    border-radius: 0.25em;
+    border-radius: 20em;
     text-align: center;
-    padding: 1em;
+    padding: 0.5em;
 
 }
 
@@ -86,5 +74,9 @@ input:focus{
     bottom: 0;
     transform: scale(1);
     transform: 1.5s;
+    
+}
+
+.form_select {
     
 }
