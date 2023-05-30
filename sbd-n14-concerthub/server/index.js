@@ -44,7 +44,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/order', async (req, res) => {
   try {
-    const { User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, metode_pembayaran, balance_BCA } = req.body;
+    const { User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, metode_pembayaran} = req.body;
 
     // Fetch the konser details from the database
     const konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
@@ -61,9 +61,10 @@ app.post('/order', async (req, res) => {
     let total_payment = jumlah_payment;
 
     // Fetch the user's status from the database
-    const user = await pool.query("SELECT status_user, balance_GOPAY FROM USERR WHERE user_id = $1", [User_id]);
+    const user = await pool.query("SELECT status_user, balance_GOPAY, balance_BCA FROM USERR WHERE user_id = $1", [User_id]);
     const userStatus = user.rows[0].status_user;
-    const balance_GOPAY = user.rows[0].balance_GOPAY;
+    const balance_GOPAY = user.rows[0].balance_gopay;
+    const balance_BCA = user.rows[0].balance_bca;
 
     // Check if the user's status is privileged or normal
     if (userStatus === 'privillege' || typeof jenis_accomodation === 'undefined') {
@@ -99,8 +100,8 @@ app.post('/order', async (req, res) => {
       } catch (err) {
       console.error(err.message);
       res.status(500).json({ error: 'Internal Server Error' });
-      }
-      });
+    }
+});
       
 
 //Route Review
