@@ -15,7 +15,6 @@ CREATE TABLE USERR(
     no_telpon bigint NOT NULL,
     balance_BCA int,
     balance_GOPAY int,
-    order_id int
 );
 
 CREATE TABLE ORDER_TICKET(

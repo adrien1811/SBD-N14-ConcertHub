@@ -78,7 +78,7 @@ app.post('/order', async (req, res) => {
   }
 });
 
-//Route Review (Update belum dipakai)
+//Route Review
 app.post('/review', async (req, res) => {
   try {
     const { konser_id, rating, komen, review_date } = req.body;
@@ -97,63 +97,6 @@ app.post('/review', async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-//Route Review (Update belum dipakai)
-app.post('/review', async (req, res) => {
-  try {
-    const { konser_id, rating, komen, review_date } = req.body;
-    const REGISTER = await pool.query("INSERT INTO review (konser_id, rating, komen, review_date) VALUES ($1, $2, $3, $4) RETURNING review_id", [konser_id, rating, komen, review_date]);
-
-    const insertedReviewId = REGISTER.rows[0].review_id;
-
-    pool.query("UPDATE KONSER SET rating = (SELECT AVG(rating) FROM REVIEW WHERE konser_id = $1) WHERE konser_id = $1", [konser_id])
-      .then(() => {
-        res.json({ review_id: insertedReviewId });
-      })
-      .catch((error) => {
-        console.error(error.message);
-        res.status(500).json({ error: 'Internal Server Error' });
-      });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get('/getorder', async (req, res) => {
-  try{
-    const allOrder = await pool.query("SELECT * FROM ORDER_TICKET");
-    res.json(allOrder.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.get('/getkonser', async (req, res) => {
-  try{
-    const allKonser = await pool.query("SELECT * FROM konser");
-    res.json(allKonser.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.get('/getperformer', async (req, res) => {
-  try{
-    const allPerform = await pool.query("SELECT * FROM performer");
-    res.json(allPerform.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
-
-app.get('/getreview', async (req, res) => {
-  try{
-    const allReview = await pool.query("SELECT * FROM review");
-    res.json(allReview.rows);
-  } catch (err) {
-    console.error(err.message);
   }
 });
 
@@ -208,17 +151,82 @@ app.put('/topup/bca/:user_id', async (req, res) => {
   }
 });
 
-//ngetes getuser
-app.get('/getuser', async (req, res) => {
+
+// Menunjukkan order yang dimiliki oleh user
+app.get('/getuserorder', async (req, res) => {
+  const { user_id } = req.body;
   try{
-    const allUsers = await pool.query("SELECT * FROM USERR");
-    res.json(allUsers.rows);
+    const allOrder = await pool.query("SELECT * FROM ORDER_TICKET WHERE user_id = $1", [user_id]);
+    res.json(allOrder.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+//Menunjukkan semua konser yang ada
+app.get('/getkonser', async (req, res) => {
+  try{
+    const allKonser = await pool.query("SELECT * FROM KONSER");
+    res.json(allKonser.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
+//Menunjukkan konser tertentu
+app.get('/searchkonser', async (req, res) => {
+  const { konser_id } = req.body;
+  try{
+    const Konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
+    res.json(Konser.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+// Menunjukkan review yang dimiliki konser
+app.get('/getkonserreview', async (req, res) => {
+  const { konser_id } = req.body;
+  try{
+    const konserReview = await pool.query("SELECT * FROM REVIEW WHERE konser_id = $1", [konser_id]);
+    res.json(konserReview.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Menunjukkan informasi semua performer
+app.get('/getperformer', async (req, res) => {
+  try{
+    const allPerform = await pool.query("SELECT * FROM performer");
+    res.json(allPerform.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Menunjukkan performer tertentu
+app.get('/searchperformer', async (req, res) => {
+  const { performer_id } = req.body;
+  try{
+    const Performer = await pool.query("SELECT * FROM PERFORMER WHERE performer_id = $1", [performer_id]);
+    res.json(Performer.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+//Menunjukkan informasi user
+app.get('/getuser', async (req, res) => {
+  const { user_id } = req.body;
+  try{
+    const User = await pool.query("SELECT * FROM USERR WHERE user_id = $1", [user_id]);
+    res.json(User.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.listen(4500, () => {
+  console.log("Server is running on port 4500");
+});
