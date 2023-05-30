@@ -45,17 +45,30 @@ app.post('/login', async (req, res) => {
 //Route order tiket
 app.post('/order', async (req, res) => {
   try {
-    const { User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran } = req.body;
+    const { User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, metode_pembayaran } = req.body;
+
+    // Fetch the konser details from the database
+    const konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
+    const harga_tiket = konser.rows[0].harga_tiket;
+
+    let harga_akomodasi = 0;
+    if (jenis_accomodation === 'hotel') {
+      harga_akomodasi = 400000;
+    } else if (jenis_accomodation === 'vila') {
+      harga_akomodasi = 600000;
+    }
+
+    const jumlah_payment = harga_tiket + harga_akomodasi;
 
     // Fetch the user's status from the database
-    const user = await pool.query("SELECT status_user FROM userr WHERE user_id = $1", [User_id]);
+    const user = await pool.query("SELECT status_user FROM USERR WHERE user_id = $1", [User_id]);
     const userStatus = user.rows[0].status_user;
 
     // Check if the user's status is privileged or normal
     if (userStatus === 'privillege' || typeof jenis_accomodation === 'undefined') {
-      const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, jumlah_payment, metode_pembayaran]);
+      const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran]);
       const insertedOrderId = REGISTER.rows[0].order_id;
-      res.json({ order_id: insertedOrderId });
+      res.json({ order_id: insertedOrderId, Total_payment: jumlah_payment });
     } else {
       res.status(403).json({ error: 'Unauthorized: Only privileged users can choose jenis_accomodation.' });
     }
@@ -64,6 +77,7 @@ app.post('/order', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 //Route Review (Update belum dipakai)
 app.post('/review', async (req, res) => {
   try {
@@ -143,18 +157,22 @@ app.get('/getreview', async (req, res) => {
   }
 });
 
-// Route for topping up balance_GOPAY
 app.put('/topup/gopay/:user_id', async (req, res) => {
   try {
     const { user_id } = req.params;
     const { topUpAmount } = req.body;
 
+    // Validate topUpAmount
+    if (isNaN(topUpAmount)) {
+      return res.status(400).json({ error: 'Invalid topUpAmount' });
+    }
+
     // Fetch the current balance_GOPAY from the database
     const user = await pool.query("SELECT balance_GOPAY FROM USERR WHERE user_id = $1", [user_id]);
-    const currentBalance = parseInt(user.rows[0].balance_GOPAY); // Parse the value as an integer
+    const currentBalance = parseInt(user.rows[0].balance_GOPAY);
 
     // Calculate the new balance
-    const newBalance = currentBalance + parseInt(topUpAmount); // Parse the value as an integer
+    const newBalance = currentBalance + parseInt(topUpAmount);
 
     // Update the balance_GOPAY in the database
     await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [newBalance, user_id]);
@@ -165,6 +183,7 @@ app.put('/topup/gopay/:user_id', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 // Route for topping up balance_BCA
 app.put('/topup/bca/:user_id', async (req, res) => {
@@ -199,9 +218,7 @@ app.get('/getuser', async (req, res) => {
   }
 });
 
-
-
-app.listen(4500, () => {
-  console.log("Server is running on port 4700");
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
 });
 
