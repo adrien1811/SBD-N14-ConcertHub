@@ -100,33 +100,38 @@ app.post('/review', async (req, res) => {
   }
 });
 
+//Route for topping up balance GoPAy
 app.put('/topup/gopay/:user_id', async (req, res) => {
   try {
     const { user_id } = req.params;
     const { topUpAmount } = req.body;
 
-    // Validate topUpAmount
-    if (isNaN(topUpAmount)) {
-      return res.status(400).json({ error: 'Invalid topUpAmount' });
+    // Check if the topUpAmount is a valid integer
+    if (!Number.isInteger(topUpAmount)) {
+      return res.status(400).json({ error: 'Invalid topUpAmount value. Please provide a valid integer.' });
     }
 
     // Fetch the current balance_GOPAY from the database
     const user = await pool.query("SELECT balance_GOPAY FROM USERR WHERE user_id = $1", [user_id]);
-    const currentBalance = parseInt(user.rows[0].balance_GOPAY);
+    let currentBalance = parseInt(user.rows[0].balance_gopay); // Parse the value as an integer
+
+    // Validate the currentBalance as a number
+    if (isNaN(currentBalance) || currentBalance === undefined) {
+      currentBalance = 0; // Set the currentBalance to 0 as a fallback if it's not a valid number
+    }
 
     // Calculate the new balance
-    const newBalance = currentBalance + parseInt(topUpAmount);
+    const newBalance = currentBalance + topUpAmount;
 
     // Update the balance_GOPAY in the database
     await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [newBalance, user_id]);
 
-    res.json({ message: 'Balance topped up successfully' });
+    res.json({ message: 'Balance topped up successfully', newBalance: newBalance });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 // Route for topping up balance_BCA
 app.put('/topup/bca/:user_id', async (req, res) => {
@@ -134,9 +139,19 @@ app.put('/topup/bca/:user_id', async (req, res) => {
     const { user_id } = req.params;
     const { topUpAmount } = req.body;
 
+    // Check if the topUpAmount is a valid integer
+    if (!Number.isInteger(topUpAmount)) {
+      return res.status(400).json({ error: 'Invalid topUpAmount value. Please provide a valid integer.' });
+    }
+
     // Fetch the current balance_BCA from the database
     const user = await pool.query("SELECT balance_BCA FROM USERR WHERE user_id = $1", [user_id]);
-    const currentBalance = user.rows[0].balance_BCA;
+    const currentBalance = user.rows[0].balance_bca;
+
+    // Validate the currentBalance as a number
+    if (isNaN(currentBalance) || currentBalance === undefined) {
+      currentBalance = 0; // Set the currentBalance to 0 as a fallback if it's not a valid number
+    }
 
     // Calculate the new balance
     const newBalance = currentBalance + topUpAmount;
@@ -144,13 +159,12 @@ app.put('/topup/bca/:user_id', async (req, res) => {
     // Update the balance_BCA in the database
     await pool.query("UPDATE USERR SET balance_BCA = $1 WHERE user_id = $2", [newBalance, user_id]);
 
-    res.json({ message: 'Balance topped up successfully' });
+    res.json({ message: 'Balance topped up successfully', newBalance: newBalance });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 // Menunjukkan order yang dimiliki oleh user
 app.get('/getuserorder', async (req, res) => {
