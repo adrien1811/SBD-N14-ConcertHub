@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
+import { useNavigate } from "react-router-dom";
 import "./Registerlogin.css"
 
 const Registerlogin = () => {
+  const navigate = useNavigate()
 
     const [popupStyle, showpopup] = useState("hide")
 
@@ -34,7 +36,7 @@ const Registerlogin = () => {
         </Form.Select>
         </div>
 
-        <div className="registerbutton">Register</div>
+        <div className="registerbutton" onClick={() => navigate('/MainPage')}>Register</div>
 
         <div className={popupStyle}>
           <h3>Login Failed</h3>
