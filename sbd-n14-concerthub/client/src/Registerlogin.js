@@ -17,17 +17,17 @@ const Registerlogin = () => {
       <div className="page">
       <div className="logincover">
         <h1>Login</h1>
-        <input type="text" placeholder="Email" />
-        <input type="password" placeholder="password" />
+        <input type="text" placeholder="Username" />
+        <input type="password" placeholder="Password" />
 
         <div className="loginbutton" onClick={popup}>Login</div>
 
         <p className = "or-text">didn't have account?</p>
         <h1>Register</h1>
-        <input type="text" placeholder="username" />
+        <input type="text" placeholder="Username" />
         <input type="text" placeholder="Email" />
-        <input type="password" placeholder="password" />
-        <input type="int" placeholder="nomor telepon" />
+        <input type="password" placeholder="Password" />
+        <input type="int" placeholder="Phone Number" />
         
         <div className="form_select">  
         <Form.Select  aria-label="jenis akun" >
