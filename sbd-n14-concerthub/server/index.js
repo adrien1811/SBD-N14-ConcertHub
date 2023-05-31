@@ -44,7 +44,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/order', async (req, res) => {
   try {
-    const { User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, metode_pembayaran} = req.body;
+    const { User_id, konser_id, nama_pemesan, no_telpon, email, jenis_accomodation, metode_pembayaran } = req.body;
 
     // Fetch the konser details from the database
     const konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
@@ -77,6 +77,15 @@ app.post('/order', async (req, res) => {
         if (balance_GOPAY >= total_payment) {
           // Update the balance_GOPAY in the database
           await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [balance_GOPAY - total_payment, User_id]);
+
+          // Set the status_order as 'paid'
+          const status_order = 'paid';
+
+          // Insert the order into the database
+          const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, total_payment, metode_pembayaran]);
+
+          const insertedOrderId = REGISTER.rows[0].order_id;
+          res.json({ order_id: insertedOrderId, Total_payment: total_payment });
         } else {
           return res.status(400).json({ error: 'Insufficient balance in GOPAY' });
         }
@@ -85,23 +94,30 @@ app.post('/order', async (req, res) => {
         if (balance_BCA >= jumlah_payment) {
           // Update the balance_BCA in the database
           await pool.query("UPDATE USERR SET balance_BCA = $1 WHERE user_id = $2", [balance_BCA - jumlah_payment, User_id]);
+
+          // Set the status_order as 'paid'
+          const status_order = 'paid';
+
+          // Insert the order into the database
+          const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran]);
+
+          const insertedOrderId = REGISTER.rows[0].order_id;
+          res.json({ order_id: insertedOrderId, Total_payment: jumlah_payment });
         } else {
           return res.status(400).json({ error: 'Insufficient balance in BCA' });
         }
       } else {
         return res.status(400).json({ error: 'Invalid payment method' });
       }
-      const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, total_payment, metode_pembayaran]);
-      const insertedOrderId = REGISTER.rows[0].order_id;
-      res.json({ order_id: insertedOrderId, Total_payment: total_payment });
-      } else {
+    } else {
       res.status(403).json({ error: 'Unauthorized: Only privileged users can choose jenis_accomodation.' });
-      }
-  } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ error: 'Internal Server Error' });
     }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
+
       
 
 //Route Review
