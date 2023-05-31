@@ -5,12 +5,11 @@
 }
 
 .logincover {
-    background-color:rgb(162, 199, 240) ;
+    background-color:rgb(33, 37, 41) ;
     width: 30em;
     height: 40em;
     position: relative;
     border-radius: 2em;
-    box-shadow: 0 0.188em 1.550em rgb(100, 156, 156);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -35,7 +34,7 @@ input:focus{
 .loginbutton {
 
       align-items: center;
-      background-color: #0A66C2;
+      background-color: rgb(5, 41, 153);
       border: 0;
       border-radius: 100px;
       box-sizing: border-box;
@@ -64,7 +63,7 @@ input:focus{
     
     .button-18:hover,
     .button-18:focus { 
-      background-color: #16437E;
+      background-color: rgb(5, 41, 153);
       color: #ffffff;
     }
     
@@ -83,7 +82,7 @@ input:focus{
 
 .registerbutton {
     align-items: center;
-    background-color: #0A66C2;
+    background-color: rgb(5, 41, 153);
     border: 0;
     border-radius: 100px;
     box-sizing: border-box;
@@ -112,7 +111,7 @@ input:focus{
   
   .button-18:hover,
   .button-18:focus { 
-    background-color: #16437E;
+    background-color: rgb(5, 41, 153);
     color: #ffffff;
   }
   

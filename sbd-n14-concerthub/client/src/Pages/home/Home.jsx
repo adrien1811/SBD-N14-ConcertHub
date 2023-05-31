@@ -7,7 +7,7 @@ const Home = () => {
 
   return <div>
    <Header />
-   <Bids title="Book Concert Now"  />
+   <Bids title="Event Choices"  />
   </div>;
 };
 

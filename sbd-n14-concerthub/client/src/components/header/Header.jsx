@@ -74,7 +74,7 @@ const Header = () => {
     <div className='header section__padding'>
       <div className="header-content">
         <div>
-          <h1>Diskon 10% untuk pembelian dengan gopay</h1>
+          <h1>Diskon 10% untuk pembelian dengan Gopay</h1>
           <img className='shake-vertical' src={gojek} alt="" />
         </div>
       </div>
