@@ -8,14 +8,14 @@ const App = () => {
   return (
     <div>
       <Navibar/>
-    <div className="page">
+      <div className="Background">
       <Router>
         <Routes>
           <Route path ="/" element = {<Registerlogin/>}/>
           <Route path ="/MainPage" element = {<Home/>}/>
         </Routes>
       </Router>
-    </div>
+      </div>
     </div>
   )
 }

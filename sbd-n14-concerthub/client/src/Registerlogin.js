@@ -14,6 +14,7 @@ const Registerlogin = () => {
     }
 
     return (
+      <div className="page">
       <div className="logincover">
         <h1>Login</h1>
         <input type="text" placeholder="Email" />
@@ -43,6 +44,7 @@ const Registerlogin = () => {
           <p>Username or Password incorrect</p>
         </div>
         
+      </div>
       </div>
     )
   }
