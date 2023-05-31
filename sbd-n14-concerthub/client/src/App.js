@@ -1,6 +1,6 @@
 import Registerlogin from "./Registerlogin"
 import Navibar from "./components/Navibar"
-import Home from "./Pages/Home"
+import Home from "./Pages/home/Home"
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
