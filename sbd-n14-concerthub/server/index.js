@@ -49,6 +49,8 @@ app.post('/order', async (req, res) => {
     // Fetch the konser details from the database
     const konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
     const harga_tiket = konser.rows[0].harga_tiket;
+    let kapasitas = konser.rows[0].kapasitas;
+    let kapasitas_privillege = konser.rows[0].kapasitas_privillege;
 
     let harga_akomodasi = 0;
     if (jenis_accomodation === 'hotel') {
@@ -75,8 +77,16 @@ app.post('/order', async (req, res) => {
 
         // Check if the user has sufficient balance in GOPAY
         if (balance_GOPAY >= total_payment) {
-          // Update the balance_GOPAY in the database
+          // Reduce the appropriate capacity based on user status
+          if (userStatus === 'privillege') {
+            kapasitas_privillege--;
+          } else {
+            kapasitas--;
+          }
+
+          // Update the balance_GOPAY, kapasitas, and kapasitas_privillege in the database
           await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [balance_GOPAY - total_payment, User_id]);
+          await pool.query("UPDATE KONSER SET kapasitas = $1, kapasitas_privillege = $2 WHERE konser_id = $3", [kapasitas, kapasitas_privillege, konser_id]);
 
           // Set the status_order as 'paid'
           const status_order = 'paid';
@@ -92,8 +102,16 @@ app.post('/order', async (req, res) => {
       } else if (metode_pembayaran === 'BCA') {
         // Check if the user has sufficient balance in BCA
         if (balance_BCA >= jumlah_payment) {
-          // Update the balance_BCA in the database
+          // Reduce the appropriate capacity based on user status
+          if (userStatus === 'privillege') {
+            kapasitas_privillege--;
+          } else {
+            kapasitas--;
+          }
+
+          // Update the balance_BCA, kapasitas, and kapasitas_privillege in the database
           await pool.query("UPDATE USERR SET balance_BCA = $1 WHERE user_id = $2", [balance_BCA - jumlah_payment, User_id]);
+          await pool.query("UPDATE KONSER SET kapasitas = $1, kapasitas_privillege = $2 WHERE konser_id = $3", [kapasitas, kapasitas_privillege, konser_id]);
 
           // Set the status_order as 'paid'
           const status_order = 'paid';
@@ -117,6 +135,9 @@ app.post('/order', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
 
       
 
@@ -237,6 +258,23 @@ app.get('/searchkonser', async (req, res) => {
     res.json(Konser.rows);
   } catch (err) {
     console.error(err.message);
+  }
+});
+app.get('/getorder/:order_id', async (req, res) => {
+  try {
+    const order_id = req.params.order_id;
+
+    // Fetch the order details from the database
+    const order = await pool.query("SELECT * FROM ORDER_TICKET WHERE order_id = $1", [order_id]);
+
+    if (order.rows.length === 0) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    res.json(order.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
