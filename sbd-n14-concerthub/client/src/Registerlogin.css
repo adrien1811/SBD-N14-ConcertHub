@@ -2,34 +2,69 @@
 
 .or-text {
     color: #ffffff;
+    margin-top: 40px;
 }
 
-h1{
-    color: #ffffff;
-    font: 100px;
+.logo img{
+  margin-left: 20px;
+  width: 100%;
+  position: relative;
+}
+
+.logincover h1{
+   color:white;
+    font-size: 35px;
     font-weight: 600;
-    margin-bottom: 0.5em;
+    margin-top: 10px;
+    margin-bottom: 75px;
+    font-style: normal;
+
 }
-h2{
-  color: #ffffff;
-  font-size: 2em;
-  font-weight: 600;
-  margin-bottom: 0.5em;
-}
-.logincover {
-    background-color:rgb(33, 37, 41) ;
-    width: 30em;
-    height: 40em;
-    left: 300px;
-    position: relative;
-    border-radius: 2em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-    font-family: Arial
+.logincover h2{
+  color:white;
+    font-size: 35px;
+    font-weight: 600;
+    margin-top: 10px;
+    margin-bottom: 75px;
+    font-style: normal;
 }
 
+.logincover input,
+.registercover input {
+  margin: 0.5em 0;
+}
+
+.logincover {
+  margin-right: 400px;
+  background-color: rgb(33, 37, 41);
+  width: 30em;
+  height: 40em;
+  position: relative;
+  border-radius: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+  left: 300px
+}
+
+.registercover {
+  background-color: rgb(33, 37, 41);
+  width: 30em;
+  height: 40em;
+  position: relative;
+  border-radius: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+  margin: 0 auto;
+}
+.form_select{
+  margin-top: 10px;
+}
 input{
     border: none;
     background-color: azure;
@@ -48,6 +83,7 @@ input:focus{
       align-items: center;
       background-color: rgb(5, 41, 153);
       border: 0;
+      margin-top: 20px;
       border-radius: 100px;
       box-sizing: border-box;
       color: #ffffff;
@@ -96,6 +132,7 @@ input:focus{
     align-items: center;
     background-color: rgb(5, 41, 153);
     border: 0;
+    margin-top: 20px;
     border-radius: 100px;
     box-sizing: border-box;
     color: #ffffff;

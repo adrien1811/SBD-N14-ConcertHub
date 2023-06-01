@@ -74,7 +74,7 @@ const Header = () => {
     <div className='header section__padding'>
       <div className="header-content">
         <div>
-          <h1>10% Discount for every gopay puchase</h1>
+          <h1>10% Discount for every Gopay puchases</h1>
           <img className='shake-vertical' src={gojek} alt="" />
         </div>
       </div>

@@ -8,7 +8,6 @@ const Home = () => {
     <div>
       <Header />
       <Bids title="Event Choices" />
-      <Footer />
     </div>
   );
 };
