@@ -38,7 +38,7 @@ const Registerlogin = () => {
         </Form.Select>
         </div>
 
-        <div className="registerbutton" onClick={() => navigate('/MainPage')}>Register</div>
+        <div className="registerbutton" onClick={() => navigate('/')}>Register</div>
 
         <div className={popupStyle}>
           <h3>Login Failed</h3>
