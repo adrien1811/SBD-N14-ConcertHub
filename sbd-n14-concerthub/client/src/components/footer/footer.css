@@ -1,13 +1,16 @@
 .footer{
+  margin: 125px 0 0 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: var(--color-footer);
-  border-top: 1px solid rgba(165, 165, 165, 0.1);
+  background: rgba(165, 165, 165, 0.1);
+  border-top: 1px solid rgba(249, 243, 243, 0.1);
   padding-bottom: 2rem;
 }
-
+.footer p{
+  color: white;
+}
 .footer-btn p{
   box-sizing: border-box;
   font-family: var(--font-family);
@@ -53,8 +56,9 @@
   margin-right: 4px;
 }
 .footer-links_logo p{
+  align-items: center;
+  right: 10px;
   font-family: var(--font-family);
-  font-weight: bold;
   font-size: 18px;
   line-height: 17px;
   color: #FFFFFF;
@@ -98,6 +102,9 @@
   line-height: 30px;
   color: #FFFFFF;
   margin-bottom: 1rem;
+}
+.tags{
+  color: #fff;
 }
 .footer-links_div p{
   font-family: var(--font-family);

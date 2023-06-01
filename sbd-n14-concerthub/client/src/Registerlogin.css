@@ -1,13 +1,26 @@
 
 
 .or-text {
-    opacity: 0.3;
+    color: #ffffff;
 }
 
+h1{
+    color: #ffffff;
+    font: 100px;
+    font-weight: 600;
+    margin-bottom: 0.5em;
+}
+h2{
+  color: #ffffff;
+  font-size: 2em;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
 .logincover {
     background-color:rgb(33, 37, 41) ;
     width: 30em;
     height: 40em;
+    left: 300px;
     position: relative;
     border-radius: 2em;
     display: flex;
@@ -23,7 +36,6 @@ input{
     border-radius: 20em;
     text-align: center;
     padding: 0.5em;
-
 
 }
 

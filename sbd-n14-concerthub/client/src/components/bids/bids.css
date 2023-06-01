@@ -1,5 +1,6 @@
 
 .bids-container{
+  
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -8,6 +9,7 @@
   width: 90%;
 }
 .bids-container-text h1{
+  margin: 100px 0 0 0;
   font-family: var(--font-family);
   font-weight: 600;
   font-size: 28px;

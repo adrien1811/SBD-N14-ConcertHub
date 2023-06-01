@@ -6,9 +6,6 @@ import bids2 from '../../assets/bids2.png'
 import bids3 from '../../assets/bids3.png'
 import bids4 from '../../assets/bids4.png'
 import bids5 from '../../assets/bids5.png'
-import bids6 from '../../assets/bids6.png'
-import bids7 from '../../assets/bids7.png'
-import bids8 from '../../assets/bids8.png'
 import { Link } from 'react-router-dom';
 
 const Bids = ({ title }) => {
@@ -90,9 +87,6 @@ const Bids = ({ title }) => {
             </div>
           </div>
         </div>
-      </div>
-      <div className="load-more">
-        <button>Load More</button>
       </div>
     </div>
   );

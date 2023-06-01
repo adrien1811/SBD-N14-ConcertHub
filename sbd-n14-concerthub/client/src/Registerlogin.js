@@ -16,22 +16,22 @@ const Registerlogin = () => {
     return (
       <div className="page">
       <div className="logincover">
-        <h1>Login</h1>
-        <input type="text" placeholder="Username" />
-        <input type="password" placeholder="Password" />
+        <h1>Log to Account</h1>
+        <input type="text" placeholder="Username" required />
+        <input type="password" placeholder="Password" required />
 
         <div className="loginbutton" onClick={popup}>Login</div>
 
         <p className = "or-text">didn't have account?</p>
-        <h1>Register</h1>
-        <input type="text" placeholder="Username" />
-        <input type="text" placeholder="Email" />
-        <input type="password" placeholder="Password" />
-        <input type="int" placeholder="Phone Number" />
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Username" required />
+        <input type="text" placeholder="Email" required/>
+        <input type="password" placeholder="Password" required/>
+        <input type="int" placeholder="Phone Number" required/>
         
         <div className="form_select">  
         <Form.Select  aria-label="jenis akun" >
-          <option>Jenis akun</option>
+          <option>User Type</option>
           <option value="normal">Normal</option>
           <option value="privilege">Privilege</option>
         </Form.Select>
