@@ -42,9 +42,10 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/order', async (req, res) => {
+app.post('/:user_id/:konser_id/order', async (req, res) => {
   try {
-    const { User_id, konser_id, nama_pemesan, no_telpon, email, jenis_accomodation, metode_pembayaran } = req.body;
+    const { User_id, konser_id} = req.params;
+    const { nama_pemesan, no_telpon, email, jenis_accomodation, metode_pembayaran } = req.body;
 
     // Fetch the konser details from the database
     const konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
@@ -136,15 +137,11 @@ app.post('/order', async (req, res) => {
   }
 });
 
-
-
-
-      
-
 //Route Review
-app.post('/review', async (req, res) => {
+app.post('/:user_id/:konser_id/review', async (req, res) => {
   try {
-    const { konser_id, rating, komen, review_date } = req.body;
+    const { konser_id } = req.params;
+    const { rating, komen, review_date } = req.body;
     const REGISTER = await pool.query("INSERT INTO review (konser_id, rating, komen, review_date) VALUES ($1, $2, $3, $4) RETURNING review_id", [konser_id, rating, komen, review_date]);
 
     const insertedReviewId = REGISTER.rows[0].review_id;
@@ -164,7 +161,7 @@ app.post('/review', async (req, res) => {
 });
 
 //Route for topping up balance GoPAy
-app.put('/topup/gopay/:user_id', async (req, res) => {
+app.put('/:user_id/user/TopUpGOPAY', async (req, res) => {
   try {
     const { user_id } = req.params;
     const { topUpAmount } = req.body;
@@ -197,7 +194,7 @@ app.put('/topup/gopay/:user_id', async (req, res) => {
 });
 
 // Route for topping up balance_BCA
-app.put('/topup/bca/:user_id', async (req, res) => {
+app.put('/:user_id/user/TopUpBCA', async (req, res) => {
   try {
     const { user_id } = req.params;
     const { topUpAmount } = req.body;
@@ -229,9 +226,9 @@ app.put('/topup/bca/:user_id', async (req, res) => {
   }
 });
 
-// Menunjukkan order yang dimiliki oleh user
-app.get('/getuserorder', async (req, res) => {
-  const { user_id } = req.body;
+// Menunjukkan tiket yang dimiliki oleh user
+app.get('/:user_id/user/tickets', async (req, res) => {
+  const { user_id } = req.params;
   try{
     const allOrder = await pool.query("SELECT * FROM ORDER_TICKET WHERE user_id = $1", [user_id]);
     res.json(allOrder.rows);
@@ -240,7 +237,7 @@ app.get('/getuserorder', async (req, res) => {
   }
 });
 
-//Menunjukkan semua konser yang ada
+//Menunjukkan semua konser yang ada (debug)
 app.get('/getkonser', async (req, res) => {
   try{
     const allKonser = await pool.query("SELECT * FROM KONSER");
@@ -251,8 +248,8 @@ app.get('/getkonser', async (req, res) => {
 });
 
 //Menunjukkan konser tertentu
-app.get('/searchkonser', async (req, res) => {
-  const { konser_id } = req.body;
+app.get('/:user_id/konser/:konser_id', async (req, res) => {
+  const { konser_id } = req.params;
   try{
     const Konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
     res.json(Konser.rows);
@@ -260,9 +257,11 @@ app.get('/searchkonser', async (req, res) => {
     console.error(err.message);
   }
 });
-app.get('/getorder/:order_id', async (req, res) => {
+
+//Menunjukkan tiket tertentu yang dimiliki user
+app.get('/:user_id/user/tickets/:order_id', async (req, res) => {
   try {
-    const order_id = req.params.order_id;
+    const {order_id} = req.params;
 
     // Fetch the order details from the database
     const order = await pool.query("SELECT * FROM ORDER_TICKET WHERE order_id = $1", [order_id]);
@@ -279,8 +278,8 @@ app.get('/getorder/:order_id', async (req, res) => {
 });
 
 // Menunjukkan review yang dimiliki konser
-app.get('/getkonserreview', async (req, res) => {
-  const { konser_id } = req.body;
+app.get('/:user_id/konser/:konser_id/review', async (req, res) => {
+  const { konser_id } = req.params;
   try{
     const konserReview = await pool.query("SELECT * FROM REVIEW WHERE konser_id = $1", [konser_id]);
     res.json(konserReview.rows);
@@ -289,7 +288,7 @@ app.get('/getkonserreview', async (req, res) => {
   }
 });
 
-//Menunjukkan informasi semua performer
+//Menunjukkan informasi semua performer (debug)
 app.get('/getperformer', async (req, res) => {
   try{
     const allPerform = await pool.query("SELECT * FROM performer");
@@ -300,8 +299,8 @@ app.get('/getperformer', async (req, res) => {
 });
 
 //Menunjukkan performer tertentu
-app.get('/searchperformer', async (req, res) => {
-  const { performer_id } = req.body;
+app.get('/:user_id/performer/:performer_id', async (req, res) => {
+  const { performer_id } = req.params;
   try{
     const Performer = await pool.query("SELECT * FROM PERFORMER WHERE performer_id = $1", [performer_id]);
     res.json(Performer.rows);
@@ -311,13 +310,28 @@ app.get('/searchperformer', async (req, res) => {
 });
 
 //Menunjukkan informasi user
-app.get('/getuser', async (req, res) => {
-  const { user_id } = req.body;
+app.get('(/:user_id/user', async (req, res) => {
+  const { user_id } = req.params;
   try{
     const User = await pool.query("SELECT * FROM USERR WHERE user_id = $1", [user_id]);
     res.json(User.rows);
   } catch (err) {
     console.error(err.message);
+  }
+});
+
+//Menunjukkan informasi di home
+app.get('/:user_id/home', async (req, res) => {
+  try {
+    const Performer = await pool.query("SELECT (performer_id, nama_performer) FROM PERFORMER");
+    const Konser = await pool.query("SELECT (konser_id, nama_konser, rating) FROM KONSER");
+    res.json({
+      performer: Performer.rows,
+      konser: Konser.rows
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
