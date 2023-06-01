@@ -1,6 +1,7 @@
 import Registerlogin from "./Registerlogin"
 import Navibar from "./components/Navibar"
 import Home from "./Pages/home/Home"
+import Profile from './Pages/profile/Profile'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
@@ -10,9 +11,10 @@ const App = () => {
       <Navibar/>
       <div className="Background">
       <Router>
-        <Routes>
-          <Route path ="/" element = {<Registerlogin/>}/>
-          <Route path ="/MainPage" element = {<Home/>}/>
+        <Routes >
+          <Route path ="/" element = {<Home/>}/>
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path ="/RegisterLogin" element = {<Registerlogin/>}/>
         </Routes>
       </Router>
       </div>

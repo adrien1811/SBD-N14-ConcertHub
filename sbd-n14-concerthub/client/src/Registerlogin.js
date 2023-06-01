@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from "react-router-dom";
 import "./Registerlogin.css"
+import Navibar from "./components/Navibar";
 
 const Registerlogin = () => {
   const navigate = useNavigate()
@@ -37,7 +38,7 @@ const Registerlogin = () => {
         </Form.Select>
         </div>
 
-        <div className="registerbutton" onClick={() => navigate('/MainPage')}>Register</div>
+        <div className="registerbutton" onClick={() => navigate('/')}>Register</div>
 
         <div className={popupStyle}>
           <h3>Login Failed</h3>
