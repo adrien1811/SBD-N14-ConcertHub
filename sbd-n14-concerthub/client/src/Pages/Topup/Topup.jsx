@@ -1,7 +1,7 @@
 import React from 'react';
-import './TopUp.css';
-import Logo from '../../assets/Group1.jpg'
-const TopUp = () => {
+import './Topup.css';
+import Logo from '../../assets/Group1.png'
+const Topup = () => {
 
     return (
       <div className="TopUpPage">
@@ -11,4 +11,4 @@ const TopUp = () => {
       </div>
     );
   };
-  export default TopUp;
+  export default Topup;
