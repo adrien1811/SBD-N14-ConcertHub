@@ -3,6 +3,8 @@ import Navibar from "./components/Navibar"
 import Footer from "./components/footer/Footer"
 import Home from "./Pages/home/Home"
 import Profile from './Pages/profile/Profile'
+import Topup from './Pages/Topup/Topup'
+import Konser from './Pages/Konser/Konser'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
@@ -16,9 +18,11 @@ const App = () => {
           <Route path ="/" element = {<Home/>}/>
           <Route path="/profile/:id" element={<Profile />} />
           <Route path ="/Registerlogin" element = {<Registerlogin/>}/>
+          <Route path ="/Topup" element = {<Topup/>}/>
+          <Route path ="/Konser" element = {<Konser/>}/>
         </Routes>
       </Router>
-      <Footer/>
+         <Footer/>
       </div>
     </div>
   )

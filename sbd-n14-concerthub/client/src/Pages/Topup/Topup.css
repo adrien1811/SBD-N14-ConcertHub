@@ -1,0 +1,100 @@
+.Infocover {
+    margin-right: 400px;
+    background-color: rgb(33, 37, 41);
+    width: 30em;
+    height: 40em;
+    margin-left: 500px;
+    position: relative;
+    border-radius: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial;
+    left: 300px;
+    margin-top: 0px;
+  }
+  .logo-img {
+    /* CSS properties */
+    width: 500px;
+    /* Add any other styles you want */
+    margin-left: 100px;
+    position: relative; /* Set the image position to relative */
+    top: 350px; /* Adjust the top position to remove the margin effect */
+  }
+  .heading1 {
+    position: absolute;
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+    top: 50px;
+    bottom: unset;
+  }
+  .heading2 {
+    position: absolute;
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+    top: 275px;
+    bottom: unset;
+  }
+  .Balance {
+    position: absolute;
+    margin-bottom: 250px;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+  }
+  .Topup {
+    /* CSS properties for the input element */
+    width: 250px;
+    position: absolute;
+    margin-top: 350px;
+    margin-left: 50px;
+    justify-content: center;
+    top: 0px;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+.Dropdown{
+  width: 175px;
+  position: absolute;
+  margin-top: 400px;
+  justify-content: center;
+  top: 0px;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+.TopupButton {
+  margin-top: 325px;
+  align-items: center;
+  background-color: rgb(5, 41, 153);
+  border: 0;
+  border-radius: 100px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 20px;
+  max-width: 480px;
+  min-height: 40px;
+  min-width: 0px;
+  overflow: hidden;
+  padding: 0px;
+  padding-left: 35px;
+  padding-right: 35px;
+  text-align: center;
+  touch-action: manipulation;
+  transition: background-color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, box-shadow 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s, color 0.167s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+}

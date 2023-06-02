@@ -6,9 +6,9 @@
 }
 
 .logo img{
-  margin-left: 20px;
   width: 100%;
-  position: relative;
+  margin-left: 100px;
+    position: relative; 
 }
 
 .logincover h1{
