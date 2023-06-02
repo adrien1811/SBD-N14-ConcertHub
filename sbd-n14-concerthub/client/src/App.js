@@ -5,6 +5,7 @@ import Home from "./Pages/home/Home"
 import Profile from './Pages/profile/Profile'
 import Topup from './Pages/Topup/Topup'
 import Konser from './Pages/Konser/Konser'
+import Userprofile from './Pages/userprofile/Userprofile'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
@@ -18,6 +19,7 @@ const App = () => {
           <Route path ="/" element = {<Home/>}/>
           <Route path="/profile/:id" element={<Profile />} />
           <Route path ="/Registerlogin" element = {<Registerlogin/>}/>
+          <Route path ="/userprofile" element = {<Userprofile/>}/>
           <Route path ="/Topup" element = {<Topup/>}/>
           <Route path ="/Konser" element = {<Konser/>}/>
         </Routes>

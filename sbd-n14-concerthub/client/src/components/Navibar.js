@@ -31,7 +31,7 @@ const Navibar = () => {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
+            <Nav.Link href="/userprofile">tombol Profile sementara</Nav.Link>
           </Nav>
           <Nav>
             <Nav.Link href="/RegisterLogin">Login/Register</Nav.Link>

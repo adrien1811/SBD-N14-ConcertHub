@@ -3,7 +3,6 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate } from "react-router-dom";
 import "./Registerlogin.css";
 import logo from './Group1.png'
-import Navibar from "./components/Navibar";
 
 const Registerlogin = () => {
   const navigate = useNavigate();
