@@ -20,7 +20,7 @@ const Bids = ({ title }) => {
             <div className="bids-card">
               <div className="bids-card-top">
                 <img src={bids1} alt="" />
-                <Link to={`/post/123`}>
+                <Link to={`/konser`}>
                   <p className="bids-title">Coldplay</p>
                 </Link>
               </div>
@@ -34,7 +34,7 @@ const Bids = ({ title }) => {
             <div className="bids-card">
               <div className="bids-card-top">
                 <img src={bids2} alt="" />
-                <Link to={`/post/123`}>
+                <Link to={`/konser`}>
                   <p className="bids-title">Freedom eternal</p>
                 </Link>
               </div>
@@ -48,7 +48,7 @@ const Bids = ({ title }) => {
             <div className="bids-card">
               <div className="bids-card-top">
                 <img src={bids3} alt="" />
-                <Link to={`/post/123`}>
+                <Link to={`/konser`}>
                   <p className="bids-title">LGHDTV</p>
                 </Link>
               </div>
@@ -62,7 +62,7 @@ const Bids = ({ title }) => {
             <div className="bids-card">
               <div className="bids-card-top">
                 <img src={bids4} alt="" />
-                <Link to={`/post/123`}>
+                <Link to={`/konser`}>
                   <p className="bids-title">Blackpink</p>
                 </Link>
               </div>
@@ -76,7 +76,7 @@ const Bids = ({ title }) => {
             <div className="bids-card">
               <div className="bids-card-top">
                 <img src={bids5} alt="" />
-                <Link to={`/post/123`}>
+                <Link to={`/konser`}>
                   <p className="bids-title">lorem ipsum</p>
                 </Link>
               </div>
