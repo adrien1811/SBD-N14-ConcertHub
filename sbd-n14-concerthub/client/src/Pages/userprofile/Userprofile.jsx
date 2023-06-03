@@ -1,7 +1,7 @@
 import React from 'react';
 import './userprofile.css'
 import { useNavigate } from "react-router-dom";
-import item from '../../assets/item1.png'
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const Userprofile = () => {
   const navigate = useNavigate();
@@ -9,8 +9,37 @@ const Userprofile = () => {
 
   return( 
       <div className='item section__padding'>
+        <div className='History_Header'>
+          <h1>History</h1>
+
         <div className="item-image">
-          <img src={item} alt="item" />
+        <ListGroup as="ol" numbered>
+      <ListGroup.Item
+        as="li"
+        className="d-flex justify-content-between align-items-start">
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Subheading</div>
+          Cras justo odio
+        </div>
+      </ListGroup.Item>
+      <ListGroup.Item
+        as="li"
+        className="d-flex justify-content-between align-items-start">
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Subheading</div>
+          Cras justo odio
+        </div>
+      </ListGroup.Item>
+      <ListGroup.Item
+        as="li"
+        className="d-flex justify-content-between align-items-start">
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Subheading</div>
+          Cras justo odio
+        </div>
+      </ListGroup.Item>
+    </ListGroup>
+        </div>
         </div>
           <div className="item-content">
             <div className="item-content-title">
@@ -25,8 +54,7 @@ const Userprofile = () => {
               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
             </div>
             <div className="item-content-buy">
-              <button className="primary-btn" onClick={() => navigate('/Topup')}>Topup Gopay</button>
-              <button className="secondary-btn" onClick={() => navigate('/Topup')}>Topup BCA</button>
+              <button className="primary-btn" onClick={() => navigate('/Topup')}>Topup Now</button>
             </div>
           </div>
       </div>
