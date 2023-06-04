@@ -29,9 +29,7 @@ const Konser = () => {
       </div>
       <div className="BuyCard">
       <p> Only 500.000 idr!</p>
-      <div className="BuyNowButton" onClick={handleBuyNow}>
-              Reserve Now!
-            </div>
+      <div className="BuyNowButton" onClick={() => navigate('/order')}>Reserve Now</div>
       </div>
       <div className="Description">
       <h1>Description</h1>
