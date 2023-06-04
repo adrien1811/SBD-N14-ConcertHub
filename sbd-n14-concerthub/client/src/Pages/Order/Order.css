@@ -1,0 +1,41 @@
+.Gambar img{
+    top:50px;
+    margin-bottom: 650px;
+    margin-left: 425px;
+    position: relative; 
+  }
+  .Cover {
+    position: absolute; 
+    background-color: rgb(33, 37, 41);
+    width: 675px;
+    height: 40em;
+    margin-left: 130px;
+    bottom:485px;
+    position: relative;
+    border-radius: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial;
+    left: 300px;
+    margin-top: 0px;
+  }
+  .Username {
+    position: absolute;
+    bottom: 450px;
+    justify-content: center;
+    color: white;
+  }
+  .PhoneNumber{
+    position: absolute;
+    bottom: 390px;
+    justify-content: center;
+    color: white;
+  }
+  .Email{
+    position: absolute;
+    bottom: 330px;
+    justify-content: center;
+    color: white;
+  }

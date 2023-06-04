@@ -310,15 +310,16 @@ app.get('/:user_id/performer/:performer_id', async (req, res) => {
 });
 
 //Menunjukkan informasi user
-app.get('(/:user_id/user', async (req, res) => {
+app.get('/:user_id/user', async (req, res) => {
   const { user_id } = req.params;
-  try{
+  try {
     const User = await pool.query("SELECT * FROM USERR WHERE user_id = $1", [user_id]);
     res.json(User.rows);
   } catch (err) {
     console.error(err.message);
   }
 });
+
 
 //Menunjukkan informasi di home
 app.get('/:user_id/home', async (req, res) => {
