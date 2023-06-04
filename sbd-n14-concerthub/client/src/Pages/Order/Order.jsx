@@ -12,11 +12,14 @@ const Order = () => {
     };
     const HandleViewProfile = () => {
     };
+    const handlePay = () => {
+
+    };
 
     
     return (
         <div className="KonserPage">
-            <div className="Gambar">
+            <div className="Coldplay">
                 <img src={Coldplay} alt="Coldplay" />
             </div>
             <div className="Cover">
@@ -31,6 +34,21 @@ const Order = () => {
             </div>
             <div className="Email">
             <input type="text" placeholder="Email" required />
+            </div>
+            <div className="Accomodation">
+            <Form.Select aria-label="Accomodation">
+                <option>Accomodation</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Vila">Vila</option>
+              </Form.Select>
+              <div className="Price">
+           <p>Ticket Price : 500.000 idr</p>
+           <p>Vila Price   : 400.000</p>
+           <p>Payment Total   : 900.000</p>
+        </div>
+          </div>
+          <div className="PayButton" onClick={handlePay}>
+              Submit Payment
             </div>
             </div>
     </div>
