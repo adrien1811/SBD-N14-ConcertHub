@@ -5,11 +5,17 @@ const cors = require("cors");
 const pool = require("./db");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const session = require('express-session');
 
 //middleware
 app.use(cors());
 app.use(express.json());
-
+const path = require('path');
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true
+}));
 //router
 //router for register
 app.post('/register', async (req, res) => {
@@ -24,6 +30,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
+
 //routers for login
 app.post('/login', async (req, res) => {
   try {
@@ -32,6 +39,7 @@ app.post('/login', async (req, res) => {
     if (LOGIN.rows.length > 0) {
       // Login successful
       res.json({ message: 'Login successful' });
+      req.session.username = username;
     } else {
       // Login failed
       res.status(401).json({ error: 'Invalid username or password' });
@@ -336,6 +344,6 @@ app.get('/:user_id/home', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log("Server is running on port 3001");
+app.listen(4000, () => {
+  console.log("Server is running on port 3003");
 });
