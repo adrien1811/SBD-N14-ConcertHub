@@ -86,6 +86,8 @@ const Registerlogin = () => {
       } else {
         // Handle login error
         // For example, display an error message to the user
+        showPopup("login-popup");
+        setTimeout(() => showPopup("hide"), 3000);
         console.error('Login failed.');
       }
     } catch (error) {
@@ -105,7 +107,7 @@ const Registerlogin = () => {
             <h1>Log into Account</h1>
             <input type="text" placeholder="Username" required value={username} onChange={e => setUsername(e.target.value)} />
             <input type="password" placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
-            <div className="loginbutton" onClick={popup}>Login</div>
+            <div className="loginbutton" onClick={handleLogin}>Login</div>
           </>
         )}
 
