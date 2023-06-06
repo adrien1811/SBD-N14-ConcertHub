@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import { useNavigate } from "react-router-dom";
 import "./Registerlogin.css";
-import logo from './Group1.png'
+import logo from './Group1.png';
 
 
 const Registerlogin = () => {
@@ -62,6 +62,7 @@ const Registerlogin = () => {
       console.error('An error occurred during registration:', error);
     }
   };
+
   const handleLogin = async () => {
     try {
       const response = await fetch('http://localhost:4000/login', {
@@ -119,22 +120,22 @@ const Registerlogin = () => {
 
         {registerVisible && !registerFinished && (
           <>
-          <div className="registercover">
-            <h2 className="register-title">Sign Up</h2>
-            <input type="text" placeholder="Username" required value={username} onChange={e => setUsername(e.target.value)} />
-            <input type="text" placeholder="Email" required value={email} onChange={e => setEmail(e.target.value)} />
-            <input type="password" placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
-            <input type="int" placeholder="Phone Number" required value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
-            <div className="form_select">
-              <Form.Select aria-label="jenis akun" value={userType} onChange={e => setUserType(e.target.value)}>
-                <option>User Type</option>
-                <option value="normal">Normal</option>
-                <option value="privillege">Privillege</option>
-              </Form.Select>
-            </div>
-            <div className="registerbutton" onClick={handleRegister}>
-              Register
-            </div>
+            <div className="registercover">
+              <h2 className="register-title">Sign Up</h2>
+              <input type="text" placeholder="Username" required value={username} onChange={e => setUsername(e.target.value)} />
+              <input type="text" placeholder="Email" required value={email} onChange={e => setEmail(e.target.value)} />
+              <input type="password" placeholder="Password" required value={password} onChange={e => setPassword(e.target.value)} />
+              <input type="int" placeholder="Phone Number" required value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
+              <div className="form_select">
+                <Form.Select aria-label="jenis akun" value={userType} onChange={e => setUserType(e.target.value)}>
+                  <option>User Type</option>
+                  <option value="normal">Normal</option>
+                  <option value="privillege">Privilege</option>
+                </Form.Select>
+              </div>
+              <div className="registerbutton" onClick={handleRegister}>
+                Register
+              </div>
             </div>
           </>
         )}

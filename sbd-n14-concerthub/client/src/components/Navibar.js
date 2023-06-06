@@ -1,17 +1,30 @@
+import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from "react-router-dom";
 
-const Menu = () => (
-  <>
-     <Link to="/"><p>Explore</p> </Link>
-     <p>My Items</p>
-    
-  </>
- )
-
 const Navibar = () => {
+  const [username, setUsername] = useState('');
+
+useEffect(() => {
+  fetch('http://localhost:4000/dashboard', { credentials: 'include' })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      if (data && data.message === 'Login successful') {
+        setUsername(data.username);
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}, []);
 
   return (
     <>
@@ -34,7 +47,11 @@ const Navibar = () => {
             <Nav.Link href="/userprofile">tombol Profile sementara</Nav.Link>
           </Nav>
           <Nav>
-            <Nav.Link href="/RegisterLogin">Login/Register</Nav.Link>
+            {username ? (
+              <p>Hello, {username}</p>
+            ) : (
+              <Nav.Link href="/RegisterLogin">Login/Register</Nav.Link>
+            )}
           </Nav>
         </Container>
       </Navbar>

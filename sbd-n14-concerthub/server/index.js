@@ -6,23 +6,37 @@ const pool = require("./db");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const session = require('express-session');
+const cookieParser = require('cookie-parser')
 
 //middleware
 app.use(cors());
 app.use(express.json());
 const path = require('path');
+app.use(cookieParser());
 app.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true
 }));
+app.use(function(req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 //router
 //router for register
 app.post('/register', async (req, res) => {
   try {
-    const { status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY} = req.body;
+    const { status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY } = req.body;
     const REGISTER = await pool.query("INSERT INTO USERR (status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING user_id", [status_user, username, password, email, no_telpon, balance_BCA, balance_GOPAY]);
     const insertedUserId = REGISTER.rows[0].user_id;
+
+    // Set the username in the session
+    req.session.username = username;
+
     res.json({ user_id: insertedUserId });
   } catch (err) {
     console.error(err.message);
@@ -30,16 +44,17 @@ app.post('/register', async (req, res) => {
   }
 });
 
-
-//routers for login
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     const LOGIN = await pool.query("SELECT * FROM USERR WHERE username = $1 AND password = $2", [username, password]);
     if (LOGIN.rows.length > 0) {
-      // Login successful
-      res.json({ message: 'Login successful' });
+      const user_id = LOGIN.rows[0].user_id; // Get the user_id from the query result
+
+      // Set the username in the session
       req.session.username = username;
+
+      res.json({ message: 'Login successful', username: username, user_id: user_id }); // Include the username and user_id in the response
     } else {
       // Login failed
       res.status(401).json({ error: 'Invalid username or password' });
@@ -48,6 +63,25 @@ app.post('/login', async (req, res) => {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+app.get('/dashboard', (req, res) => {
+  const username = req.session.username; // Access the username from the session
+  if (username) {
+    res.json({ message: 'Login successful', username: username });
+  } else {
+    res.status(401).json({ error: 'User not logged in' });
+  }
+});
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.json({ message: 'Session cleared successfully' });
+    }
+  });
 });
 
 app.post('/:user_id/:konser_id/order', async (req, res) => {
@@ -169,7 +203,7 @@ app.post('/:user_id/:konser_id/review', async (req, res) => {
 });
 
 //Route for topping up balance GoPAy
-app.put('/:user_id/user/TopUpGOPAY', async (req, res) => {
+app.put('/TopUpGOPAY', async (req, res) => {
   try {
     const { user_id } = req.params;
     const { topUpAmount } = req.body;
@@ -202,7 +236,7 @@ app.put('/:user_id/user/TopUpGOPAY', async (req, res) => {
 });
 
 // Route for topping up balance_BCA
-app.put('/:user_id/user/TopUpBCA', async (req, res) => {
+app.put('/TopUpBCA', async (req, res) => {
   try {
     const { user_id } = req.params;
     const { topUpAmount } = req.body;
@@ -246,14 +280,17 @@ app.get('/:user_id/user/tickets', async (req, res) => {
 });
 
 //Menunjukkan semua konser yang ada (debug)
-app.get('/getkonser', async (req, res) => {
-  try{
-    const allKonser = await pool.query("SELECT * FROM KONSER");
-    res.json(allKonser.rows);
+app.get('/getkonser/:konserId', async (req, res) => {
+  try {
+    const konserId = req.params.konserId;
+    const konser = await pool.query('SELECT * FROM KONSER WHERE konser_id = $1', [konserId]);
+    res.json(konser.rows[0]);
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 //Menunjukkan konser tertentu
 app.get('/:user_id/konser/:konser_id', async (req, res) => {
@@ -318,16 +355,20 @@ app.get('/:user_id/performer/:performer_id', async (req, res) => {
 });
 
 //Menunjukkan informasi user
-app.get('/:user_id/user', async (req, res) => {
-  const { user_id } = req.params;
+
+app.get('/getuser', async (req, res) => {
+  const { user_id } = req.query;
   try {
-    const User = await pool.query("SELECT * FROM USERR WHERE user_id = $1", [user_id]);
-    res.json(User.rows);
+    const query = 'SELECT * FROM users WHERE user_id = $1';
+    const values = [user_id];
+    const result = await pool.query(query, values);
+    const user = result.rows[0];
+    res.json(user);
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 //Menunjukkan informasi di home
 app.get('/:user_id/home', async (req, res) => {

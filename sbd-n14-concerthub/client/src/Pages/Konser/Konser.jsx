@@ -45,6 +45,7 @@ The dates feature Coldplay’s first Tokyo shows since 2017, their first ever da
 
 </p>
       </div>
+     
       </div>
     );
   };
