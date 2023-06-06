@@ -10,12 +10,13 @@ const session = require('express-session');
 //middleware
 app.use(cors());
 app.use(express.json());
-const path = require('path');
+
 app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true
+  secret: '1234', 
+  resave: false, 
+  saveUninitialized: true 
 }));
+
 //router
 //router for register
 app.post('/register', async (req, res) => {
@@ -37,9 +38,12 @@ app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const LOGIN = await pool.query("SELECT * FROM USERR WHERE username = $1 AND password = $2", [username, password]);
     if (LOGIN.rows.length > 0) {
+      const user = LOGIN.rows[0];
+      const userId = user.user_id;
+
       // Login successful
+      req.session.user = userId; // Save the user ID in the session
       res.json({ message: 'Login successful' });
-      req.session.username = username;
     } else {
       // Login failed
       res.status(401).json({ error: 'Invalid username or password' });
@@ -50,9 +54,22 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/:user_id/:konser_id/order', async (req, res) => {
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error destroying session:', err);
+      res.status(500).json({ error: 'Internal Server Error' });
+    } else {
+      res.clearCookie('connect.sid'); // Clear the session cookie
+      res.json({ message: 'Logout successful' });
+    }
+  });
+});
+
+app.post('/konser/:konser_id/order', async (req, res) => {
   try {
-    const { User_id, konser_id} = req.params;
+    const User_id = req.session.user; // Retrieve the user ID from the session
+    const { konser_id} = req.params;
     const { nama_pemesan, no_telpon, email, jenis_accomodation, metode_pembayaran } = req.body;
 
     // Fetch the konser details from the database
@@ -146,7 +163,7 @@ app.post('/:user_id/:konser_id/order', async (req, res) => {
 });
 
 //Route Review
-app.post('/:user_id/:konser_id/review', async (req, res) => {
+app.post('/konser/:konser_id/review', async (req, res) => {
   try {
     const { konser_id } = req.params;
     const { rating, komen, review_date } = req.body;
@@ -169,9 +186,9 @@ app.post('/:user_id/:konser_id/review', async (req, res) => {
 });
 
 //Route for topping up balance GoPAy
-app.put('/:user_id/user/TopUpGOPAY', async (req, res) => {
+app.put('/user/TopUpGOPAY', async (req, res) => {
   try {
-    const { user_id } = req.params;
+    const userId = req.session.user; // Retrieve the user ID from the session
     const { topUpAmount } = req.body;
 
     // Check if the topUpAmount is a valid integer
@@ -180,7 +197,7 @@ app.put('/:user_id/user/TopUpGOPAY', async (req, res) => {
     }
 
     // Fetch the current balance_GOPAY from the database
-    const user = await pool.query("SELECT balance_GOPAY FROM USERR WHERE user_id = $1", [user_id]);
+    const user = await pool.query("SELECT balance_GOPAY FROM USERR WHERE user_id = $1", [userId]);
     let currentBalance = parseInt(user.rows[0].balance_gopay); // Parse the value as an integer
 
     // Validate the currentBalance as a number
@@ -192,7 +209,7 @@ app.put('/:user_id/user/TopUpGOPAY', async (req, res) => {
     const newBalance = currentBalance + topUpAmount;
 
     // Update the balance_GOPAY in the database
-    await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [newBalance, user_id]);
+    await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [newBalance, userId]);
 
     res.json({ message: 'Balance topped up successfully', newBalance: newBalance });
   } catch (err) {
@@ -202,9 +219,9 @@ app.put('/:user_id/user/TopUpGOPAY', async (req, res) => {
 });
 
 // Route for topping up balance_BCA
-app.put('/:user_id/user/TopUpBCA', async (req, res) => {
+app.put('/user/TopUpBCA', async (req, res) => {
   try {
-    const { user_id } = req.params;
+    const userId = req.session.user; // Retrieve the user ID from the session
     const { topUpAmount } = req.body;
 
     // Check if the topUpAmount is a valid integer
@@ -213,7 +230,7 @@ app.put('/:user_id/user/TopUpBCA', async (req, res) => {
     }
 
     // Fetch the current balance_BCA from the database
-    const user = await pool.query("SELECT balance_BCA FROM USERR WHERE user_id = $1", [user_id]);
+    const user = await pool.query("SELECT balance_BCA FROM USERR WHERE user_id = $1", [userId]);
     const currentBalance = user.rows[0].balance_bca;
 
     // Validate the currentBalance as a number
@@ -225,7 +242,7 @@ app.put('/:user_id/user/TopUpBCA', async (req, res) => {
     const newBalance = currentBalance + topUpAmount;
 
     // Update the balance_BCA in the database
-    await pool.query("UPDATE USERR SET balance_BCA = $1 WHERE user_id = $2", [newBalance, user_id]);
+    await pool.query("UPDATE USERR SET balance_BCA = $1 WHERE user_id = $2", [newBalance, userId]);
 
     res.json({ message: 'Balance topped up successfully', newBalance: newBalance });
   } catch (err) {
@@ -235,10 +252,10 @@ app.put('/:user_id/user/TopUpBCA', async (req, res) => {
 });
 
 // Menunjukkan tiket yang dimiliki oleh user
-app.get('/:user_id/user/tickets', async (req, res) => {
-  const { user_id } = req.params;
+app.get('/user/tickets', async (req, res) => {
+  const userId = req.session.user; // Retrieve the user ID from the session
   try{
-    const allOrder = await pool.query("SELECT * FROM ORDER_TICKET WHERE user_id = $1", [user_id]);
+    const allOrder = await pool.query("SELECT * FROM ORDER_TICKET WHERE user_id = $1", [userId]);
     res.json(allOrder.rows);
   } catch (err) {
     console.error(err.message);
@@ -256,7 +273,7 @@ app.get('/getkonser', async (req, res) => {
 });
 
 //Menunjukkan konser tertentu
-app.get('/:user_id/konser/:konser_id', async (req, res) => {
+app.get('/konser/:konser_id', async (req, res) => {
   const { konser_id } = req.params;
   try{
     const Konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
@@ -267,7 +284,7 @@ app.get('/:user_id/konser/:konser_id', async (req, res) => {
 });
 
 //Menunjukkan tiket tertentu yang dimiliki user
-app.get('/:user_id/user/tickets/:order_id', async (req, res) => {
+app.get('/user/tickets/:order_id', async (req, res) => {
   try {
     const {order_id} = req.params;
 
@@ -286,7 +303,7 @@ app.get('/:user_id/user/tickets/:order_id', async (req, res) => {
 });
 
 // Menunjukkan review yang dimiliki konser
-app.get('/:user_id/konser/:konser_id/review', async (req, res) => {
+app.get('/konser/:konser_id/review', async (req, res) => {
   const { konser_id } = req.params;
   try{
     const konserReview = await pool.query("SELECT * FROM REVIEW WHERE konser_id = $1", [konser_id]);
@@ -307,7 +324,7 @@ app.get('/getperformer', async (req, res) => {
 });
 
 //Menunjukkan performer tertentu
-app.get('/:user_id/performer/:performer_id', async (req, res) => {
+app.get('performer/:performer_id', async (req, res) => {
   const { performer_id } = req.params;
   try{
     const Performer = await pool.query("SELECT * FROM PERFORMER WHERE performer_id = $1", [performer_id]);
@@ -318,19 +335,26 @@ app.get('/:user_id/performer/:performer_id', async (req, res) => {
 });
 
 //Menunjukkan informasi user
-app.get('/:user_id/user', async (req, res) => {
-  const { user_id } = req.params;
+app.get('/user', async (req, res) => {
   try {
-    const User = await pool.query("SELECT * FROM USERR WHERE user_id = $1", [user_id]);
-    res.json(User.rows);
+
+    const userId = req.session.user; // Retrieve the user ID from the session
+
+    if (userId) {
+      const User = await pool.query("SELECT * FROM USERR WHERE user_id = $1", [userId]);
+      res.json(User.rows);
+    } else {
+      res.status(401).json({ error: 'User ID not found in the session' });
+    }
   } catch (err) {
     console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
 
 //Menunjukkan informasi di home
-app.get('/:user_id/home', async (req, res) => {
+app.get('/home', async (req, res) => {
   try {
     const Performer = await pool.query("SELECT (performer_id, nama_performer) FROM PERFORMER");
     const Konser = await pool.query("SELECT (konser_id, nama_konser, rating) FROM KONSER");
@@ -345,5 +369,5 @@ app.get('/:user_id/home', async (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log("Server is running on port 3003");
+  console.log("Server is running on port 4000");
 });
