@@ -43,6 +43,7 @@ app.post('/login', async (req, res) => {
 
       // Login successful
       req.session.user = userId; // Save the user ID in the session
+      req.session.username = username;
       res.json({ message: 'Login successful' });
     } else {
       // Login failed
@@ -52,6 +53,11 @@ app.post('/login', async (req, res) => {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+app.get('/dashboard', (req, res) => {
+  const username = req.session.username; // Access the username from the session
+  res.send(`Welcome, ${username}`);
 });
 
 app.get('/logout', (req, res) => {
@@ -263,14 +269,12 @@ app.get('/user/tickets', async (req, res) => {
 });
 
 //Menunjukkan semua konser yang ada (debug)
-app.get('/getkonser/:konserId', async (req, res) => {
-  try {
-    const konserId = req.params.konserId;
-    const konser = await pool.query('SELECT * FROM KONSER WHERE konser_id = $1', [konserId]);
-    res.json(konser.rows[0]);
+app.get('/getkonser', async (req, res) => {
+  try{
+    const allKonser = await pool.query("SELECT * FROM KONSER");
+    res.json(allKonser.rows);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
