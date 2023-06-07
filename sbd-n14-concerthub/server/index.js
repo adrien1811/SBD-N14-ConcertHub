@@ -334,7 +334,7 @@ app.get('/getperformer', async (req, res) => {
 });
 
 //Menunjukkan performer tertentu
-app.get('performer/:performer_id', async (req, res) => {
+app.get('/performer/:performer_id', async (req, res) => {
   const { performer_id } = req.params;
   try{
     const Performer = await pool.query("SELECT * FROM PERFORMER WHERE performer_id = $1", [performer_id]);
