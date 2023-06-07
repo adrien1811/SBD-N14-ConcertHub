@@ -2,7 +2,7 @@ import Registerlogin from "./Registerlogin"
 import Navibar from "./components/Navibar"
 import Footer from "./components/footer/Footer"
 import Home from "./Pages/home/Home"
-import Profile from './Pages/profile/Profile'
+import Performer from './Pages/profile/Performer'
 import Topup from './Pages/Topup/Topup'
 import Konser from './Pages/Konser/Konser'
 import Userprofile from './Pages/userprofile/Userprofile'
@@ -18,7 +18,7 @@ const App = () => {
       <Router>
         <Routes >
           <Route path ="/" element = {<Home/>}/>
-          <Route path="/profile/:performer_id" element={<Profile />} />
+          <Route path="/Performer/:performer_id" element={<Performer />} />
           <Route path ="/Registerlogin" element = {<Registerlogin/>}/>
           <Route path="/userprofile/:user_id" element={<Userprofile />} />
           <Route path ="/Topup" element = {<Topup/>}/>

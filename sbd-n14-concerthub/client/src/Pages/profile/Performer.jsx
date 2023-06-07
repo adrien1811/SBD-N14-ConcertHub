@@ -1,11 +1,11 @@
 import React from 'react';
-import './profile.css'
+import './Performer.css'
 import profile_banner from '../../assets/profile_banner.png'
 import profile_pic from '../../assets/profile.jpg'
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-const Profile = () => {
+const Performer = () => {
   const { performer_id } = useParams(); // Access the parameter from the URL
   let dataAsString;
 
@@ -60,4 +60,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Performer;
