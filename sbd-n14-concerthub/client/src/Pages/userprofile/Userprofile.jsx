@@ -3,7 +3,7 @@ import './userprofile.css';
 import { useNavigate } from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const Userprofile = () => {
+const Userprofile = (userId) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 

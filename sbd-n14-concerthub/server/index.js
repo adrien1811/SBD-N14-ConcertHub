@@ -43,6 +43,7 @@ app.post('/login', async (req, res) => {
 
       // Login successful
       req.session.user = userId; // Save the user ID in the session
+      req.session.username = username;
       res.json({ message: 'Login successful' });
     } else {
       // Login failed
@@ -53,6 +54,11 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+app.get('/dashboard', (req, res) => {
+  const username = req.session.username; // Access the username from the session
+  res.send(`Welcome, ${username}`);
+});
+
 app.get('/dashboard', (req, res) => {
   const username = req.session.username; // Access the username from the session
   res.send(`Welcome, ${username}`);
@@ -273,7 +279,6 @@ app.get('/getkonser', async (req, res) => {
     res.json(concerts.rows);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Internal server error' });
   }
 });
 
