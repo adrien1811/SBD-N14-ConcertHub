@@ -88,7 +88,7 @@ const Header = () => {
                 <img src={seller1} alt="" />
                 <img src={verify} className='verify' alt="" />
               </div>
-              <Link to={`/profile/Rian`}>
+              <Link to={`/profile/1`}>
               <p className='slider-card-name'>James Bond</p>
               </Link>
               <p className='slider-card-price'>lorem <span>ipsum</span></p>
@@ -99,7 +99,7 @@ const Header = () => {
                 <img src={seller2} alt="" />
                 <img src={verify} className='verify' alt="" />
               </div>
-              <Link to={`/profile/Rian`}>
+              <Link to={`/profile/2`}>
               <p className='slider-card-name'>Cale Henituse</p>
               </Link>
               <p className='slider-card-price'>lorem <span>ipsum</span></p>
@@ -110,7 +110,7 @@ const Header = () => {
                 <img src={seller3} alt="" />
                 <img src={verify} className='verify' alt="" />
               </div>
-              <Link to={`/profile/Rian`}>
+              <Link to={`/profile/3`}>
               <p className='slider-card-name'>Lady Young</p>
               </Link>
               <p className='slider-card-price'>lorem <span>ipsum</span></p>
@@ -121,7 +121,7 @@ const Header = () => {
                 <img src={seller4} alt="" />
                 <img src={verify} className='verify' alt="" />
               </div>
-              <Link to={`/profile/Rian`}>
+              <Link to={`/profile/4`}>
               <p className='slider-card-name'>Black Glass</p>
               </Link>
               <p className='slider-card-price'>lorem <span>ipsum</span></p>
@@ -132,7 +132,7 @@ const Header = () => {
                 <img src={seller5} alt="" />
                 <img src={verify} className='verify' alt="" />
               </div>
-              <Link to={`/profile/Rian`}>
+              <Link to={`/profile/5`}>
               <p className='slider-card-name'>Budhiman</p>
               </Link>
               <p className='slider-card-price'>lorem <span>ipsum</span></p>
@@ -143,7 +143,7 @@ const Header = () => {
                 <img src={seller6} alt="" />
                 <img src={verify} className='verify' alt="" />
               </div>
-              <Link to={`/profile/Rian`}>
+              <Link to={`/profile/6`}>
               <p className='slider-card-name'>Alex</p>
               </Link>
               <p className='slider-card-price'>lorem <span>ipsum</span></p>

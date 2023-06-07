@@ -2,8 +2,41 @@ import React from 'react';
 import './profile.css'
 import profile_banner from '../../assets/profile_banner.png'
 import profile_pic from '../../assets/profile.jpg'
+import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const Profile = () => {
+  const { performer_id } = useParams(); // Access the parameter from the URL
+  let dataAsString;
+
+  useEffect(() => {
+    const getperformer = async () => {
+      try {
+        const response = await fetch(`http://localhost:4000/performer/${performer_id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch performer data');
+        }
+        const data = await response.json();
+        console.log(data); // Process the data as needed
+        dataAsString = JSON.parse(data);
+
+        data.forEach((performer) => {
+          const performerId = performer.performer_id;
+          const performerName = performer.performer_name;
+          const description = performer.description;
+          
+          // Display the data on the frontend as needed
+          console.log(`Performer ID: ${performerId}`);
+          console.log(`Performer Name: ${performerName}`);
+          console.log(`Description: ${description}`);
+        });
+
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+    getperformer();
+  },[]);
 
   return (
     <div className='profile section__padding'>
@@ -13,7 +46,7 @@ const Profile = () => {
         </div>
         <div className="profile-pic">
             <img src={profile_pic} alt="profile" />
-            <h3>James Bond</h3>
+            <h3>{performer_id}</h3>
         </div>
       </div>
       <div className="profile-bottom">
