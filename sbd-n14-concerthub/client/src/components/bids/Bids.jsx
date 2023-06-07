@@ -1,96 +1,78 @@
-import React from 'react'
-import './bids.css'
-import { AiFillHeart,AiOutlineHeart } from "react-icons/ai";
-import bids1 from '../../assets/bids1.png'
-import bids2 from '../../assets/bids2.png'
-import bids3 from '../../assets/bids3.png'
-import bids4 from '../../assets/bids4.png'
-import bids5 from '../../assets/bids5.png'
+import React, { useState, useEffect } from 'react';
+import './bids.css';
+import { AiFillHeart } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
+import rex from '../../assets/Rex.jpeg';
+import Coldplay from '../../assets/Coldplay.png';
+import Bruno from '../../assets/Bruno.jpeg';
+import Westlife from '../../assets/weslife.jpeg';
+
 const Bids = ({ title }) => {
+  const [concerts, setConcerts] = useState([]);
+
+  useEffect(() => {
+    fetchConcerts();
+  }, []);
+
+  const fetchConcerts = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/getkonser');
+      const data = await response.json();
+      setConcerts(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // Mapping between konser_id and photo URLs
+  const concertPhotos = {
+    3: rex,
+    1: Coldplay,
+    2: Bruno,
+    4: Westlife,
+  };
+
+  const getConcertPhoto = (konserId) => {
+    return concertPhotos[konserId]; 
+  };
+
   return (
-    <div className='bids section__padding'>
+    <div className="bids section__padding">
       <div className="bids-container">
         <div className="bids-container-text">
           <h1>{title}</h1>
         </div>
         <div className="bids-container-card">
-          <div className="card-column">
-            <div className="bids-card">
-              <div className="bids-card-top">
-                <img src={bids1} alt="" />
-                <Link to={`/konser`}>
-                  <p className="bids-title">Coldplay</p>
-                </Link>
-              </div>
-              <div className="bids-card-bottom">
-                <p>Unlimited seats</p>
-                <p> <AiFillHeart /> 92</p>
-              </div>
-            </div>
-          </div>
-          <div className="card-column">
-            <div className="bids-card">
-              <div className="bids-card-top">
-                <img src={bids2} alt="" />
-                <Link to={`/konser`}>
-                  <p className="bids-title">Freedom eternal</p>
-                </Link>
-              </div>
-              <div className="bids-card-bottom">
-                <p>Ayo ges beli</p>
-                <p> <AiFillHeart /> 25</p>
+          {concerts.map((concert) => (
+            <div className="card-column" key={concert.konser_id}>
+              <div className="bids-card">
+                <div className="bids-card-top">
+                  <img
+                    src={getConcertPhoto(concert.konser_id)}
+                    alt={`Concert ${concert.konser_id}`}
+                  /> {/* Use the getConcertPhoto function to retrieve the appropriate photo URL */}
+                  <Link to={`/konser/${concert.konser_id}`}>
+                    <p className="bids-title">{concert.nama_konser}</p>
+                  </Link>
+                </div>
+                <div className="bids-card-bottom">
+                  <p>
+                    {concert.kapasitas_privilege === 0
+                      ? 'Unlimited seats'
+                      : 'Limited seats'}
+                  </p>
+                  <p>
+                    <AiFillHeart /> {concert.rating}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="card-column">
-            <div className="bids-card">
-              <div className="bids-card-top">
-                <img src={bids3} alt="" />
-                <Link to={`/konser`}>
-                  <p className="bids-title">LGHDTV</p>
-                </Link>
-              </div>
-              <div className="bids-card-bottom">
-                <p>Beli 1 Gratis 2</p>
-                <p> <AiFillHeart /> 55</p>
-              </div>
-            </div>
-          </div>
-          <div className="card-column">
-            <div className="bids-card">
-              <div className="bids-card-top">
-                <img src={bids4} alt="" />
-                <Link to={`/konser`}>
-                  <p className="bids-title">Blackpink</p>
-                </Link>
-              </div>
-              <div className="bids-card-bottom">
-                <p>In your area</p>
-                <p> <AiFillHeart /> 82</p>
-              </div>
-            </div>
-          </div>
-          <div className="card-column">
-            <div className="bids-card">
-              <div className="bids-card-top">
-                <img src={bids5} alt="" />
-                <Link to={`/konser`}>
-                  <p className="bids-title">lorem ipsum</p>
-                </Link>
-              </div>
-              <div className="bids-card-bottom">
-                <p>lorem ipsum</p>
-                <p> <AiFillHeart /> 22</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-
-export default Bids
+export default Bids;

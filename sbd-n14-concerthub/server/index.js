@@ -53,6 +53,10 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+app.get('/dashboard', (req, res) => {
+  const username = req.session.username; // Access the username from the session
+  res.send(`Welcome, ${username}`);
+});
 
 app.get('/logout', (req, res) => {
   req.session.destroy((err) => {
@@ -66,7 +70,7 @@ app.get('/logout', (req, res) => {
   });
 });
 
-app.post('/konser/:konser_id/order', async (req, res) => {
+app.post('/order', async (req, res) => {
   try {
     const User_id = req.session.user; // Retrieve the user ID from the session
     const { konser_id} = req.params;
@@ -163,7 +167,7 @@ app.post('/konser/:konser_id/order', async (req, res) => {
 });
 
 //Route Review
-app.post('/konser/:konser_id/review', async (req, res) => {
+app.post('/review', async (req, res) => {
   try {
     const { konser_id } = req.params;
     const { rating, komen, review_date } = req.body;
@@ -263,18 +267,16 @@ app.get('/user/tickets', async (req, res) => {
 });
 
 //Menunjukkan semua konser yang ada (debug)
-app.get('/getkonser/:konserId', async (req, res) => {
+app.get('/getkonser', async (req, res) => {
   try {
-    const konserId = req.params.konserId;
-    const konser = await pool.query('SELECT * FROM KONSER WHERE konser_id = $1', [konserId]);
-    res.json(konser.rows[0]);
+    const concerts = await pool.query('SELECT * FROM konser');
+    res.json(concerts.rows);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-//Menunjukkan konser tertentu
 app.get('/konser/:konser_id', async (req, res) => {
   const { konser_id } = req.params;
   try{
@@ -284,6 +286,7 @@ app.get('/konser/:konser_id', async (req, res) => {
     console.error(err.message);
   }
 });
+
 
 //Menunjukkan tiket tertentu yang dimiliki user
 app.get('/user/tickets/:order_id', async (req, res) => {
@@ -305,7 +308,7 @@ app.get('/user/tickets/:order_id', async (req, res) => {
 });
 
 // Menunjukkan review yang dimiliki konser
-app.get('/konser/:konser_id/review', async (req, res) => {
+app.get('/review', async (req, res) => {
   const { konser_id } = req.params;
   try{
     const konserReview = await pool.query("SELECT * FROM REVIEW WHERE konser_id = $1", [konser_id]);

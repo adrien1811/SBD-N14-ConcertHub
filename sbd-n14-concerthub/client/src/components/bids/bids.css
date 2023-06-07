@@ -1,11 +1,11 @@
 
 .bids-container{
-  
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: auto;
+  margin-left: 100px;
   width: 90%;
 }
 .bids-container-text h1{
@@ -18,7 +18,7 @@
   margin-bottom: 1rem;
 }
 .bids-container-card{
-  margin: 0 -5px;
+  margin:0 -5px;
 }
 .bids-container-card:after {
   content: "";
@@ -26,15 +26,19 @@
   clear: both;
 }
 .card-column{
+  display: flex;
   float: left;
   width: 20%;
+  margin-top: 12px;
+  margin-right: 50px;
 }
 .bids-card{
   background: #2A2D3A;
   border-radius: 20px;
   padding: 11px 12px 19px 11px;
   margin-inline: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
+  height:70%;
 }
 .bids-card img{
   border-radius: 20px;
