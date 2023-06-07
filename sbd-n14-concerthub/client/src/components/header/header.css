@@ -54,6 +54,10 @@
 
 }
 
+.slider-card-name {
+  align-items: center;
+  justify-content: center;
+}
 .slider .slider-card{
   width: 180px !important;
   height: 200px !important;

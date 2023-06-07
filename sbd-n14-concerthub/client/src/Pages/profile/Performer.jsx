@@ -10,11 +10,11 @@ const Performer = () => {
 
   useEffect(() => {
     getperformer();
-  },[]);
+  },[performer_id]);
 
   const getperformer = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/performer/${performer_id}`);
+      const response = await fetch('http://localhost:4000/performer/${performer_id}');
       if (!response.ok) {
         throw new Error('Failed to fetch performer data');
       }
