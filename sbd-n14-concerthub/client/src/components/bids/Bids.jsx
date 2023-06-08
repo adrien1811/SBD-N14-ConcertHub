@@ -43,6 +43,7 @@ const Bids = ({ title }) => {
         <div className="bids-container-text">
           <h1>{title}</h1>
         </div>
+        
         <div className="bids-container-card">
           {concerts.map((concert) => (
             <div className="card-column" key={concert.konser_id}>

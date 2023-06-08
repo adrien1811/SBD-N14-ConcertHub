@@ -12,10 +12,20 @@ app.use(cors());
 app.use(express.json());
 
 app.use(session({
-  secret: '1234', 
-  resave: false, 
-  saveUninitialized: true 
+  secret: '1234',
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false, // Set it to true if using HTTPS
+    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+  },
 }));
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 //router
 //router for register
@@ -43,8 +53,9 @@ app.post('/login', async (req, res) => {
 
       // Login successful
       req.session.user = userId; // Save the user ID in the session
+      console.log('User ID:', userId); // Add this line
       req.session.username = username;
-      res.json({ message: 'Login successful' });
+      res.json({ message: 'Login successful', userId: userId });
     } else {
       // Login failed
       res.status(401).json({ error: 'Invalid username or password' });
@@ -54,15 +65,16 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-app.get('/dashboard', (req, res) => {
-  const username = req.session.username; // Access the username from the session
-  res.send(`Welcome, ${username}`);
-});
 
 app.get('/dashboard', (req, res) => {
-  const username = req.session.username; // Access the username from the session
-  res.send(`Welcome, ${username}`);
+  const username = req.session.username;
+  if (username) {
+    res.json({ username: username });
+  } else {
+    res.status(401).json({ error: 'Not logged in' });
+  }
 });
+
 
 app.get('/logout', (req, res) => {
   req.session.destroy((err) => {
@@ -352,7 +364,7 @@ app.get('/performer/:id', (req, res) => {
   });
 });
 //Menunjukkan performer tertentu
-app.get('performer/:performer_id', async (req, res) => {
+app.get('/performer/:performer_id', async (req, res) => {
   const { performer_id } = req.params;
   try{
     const Performer = await pool.query("SELECT * FROM PERFORMER WHERE performer_id = $1", [performer_id]);

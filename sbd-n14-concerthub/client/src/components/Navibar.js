@@ -26,6 +26,7 @@ useEffect(() => {
     });
 }, []);
 
+
   return (
     <>
       <Navbar bg="dark" variant="dark">
