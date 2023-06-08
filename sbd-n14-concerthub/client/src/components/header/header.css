@@ -54,6 +54,11 @@
 
 }
 
+.performimg{
+  width: 77px;
+  height: 77px;
+}
+
 .slider-card-name {
   align-items: center;
   justify-content: center;
