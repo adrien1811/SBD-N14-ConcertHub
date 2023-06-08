@@ -52,8 +52,8 @@
   .PaymentMethod{
     width: 175px;
     position: absolute;
-    top: 50px;
-    left: 0px;
+    top: 380px;
+    left: 250px;
     justify-content: center;
     padding: 5px;
     border-radius: 5px;
@@ -63,7 +63,7 @@
   .Price {
     color: white;
     position: absolute;
-    top:115px;
+    top:450px;
     justify-content: center;
     font-size: 12px;
   }

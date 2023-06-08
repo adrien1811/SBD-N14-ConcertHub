@@ -12,6 +12,7 @@ const Order = () => {
   const navigate = useNavigate();
   const [concert, setConcert] = useState(null);
   const [accommodation, setAccommodation] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   useEffect(() => {
     fetchConcert();
@@ -50,14 +51,19 @@ const Order = () => {
     }
 
     const totalPayment = concert.harga_tiket + harga_akomodasi;
+    let discountedPayment = totalPayment;
+
+    if (paymentMethod === 'GOPAY') {
+      discountedPayment = totalPayment * 0.9; // 10% discount for GOPAY
+    }
 
     const orderData = {
       nama_pemesan: username,
       no_telpon: phoneNumber,
       email,
       jenis_accomodation: accommodation,
-      jumlah_payment: totalPayment,
-      metode_pembayaran: 'GOPAY' // Update with the selected payment method
+      jumlah_payment: discountedPayment,
+      metode_pembayaran: paymentMethod
     };
 
     console.log(orderData);
@@ -66,6 +72,10 @@ const Order = () => {
 
   const handleAccommodationChange = (event) => {
     setAccommodation(event.target.value);
+  };
+
+  const handlePaymentMethodChange = (event) => {
+    setPaymentMethod(event.target.value);
   };
 
   if (!concert) {
@@ -88,7 +98,7 @@ const Order = () => {
   return (
     <div className="KonserPage">
       <div className="KonserImage">
-      <img src={konserImage} alt="Concert" className="gmbr" />
+        <img src={konserImage} alt="Concert" className="gmbr" />
       </div>
       <div className="Cover">
         <div className="heading1">
@@ -109,18 +119,18 @@ const Order = () => {
             <option value="Hotel">Hotel</option>
             <option value="Vila">Vila</option>
           </Form.Select>
-          <div className="PaymentMethod">
-          <Form.Select id="PaymentMethod" aria-label="PaymentMethod" onChange={handleAccommodationChange}>
+        </div>
+        <div className="PaymentMethod">
+          <Form.Select id="paymentMethod" aria-label="PaymentMethod" onChange={handlePaymentMethodChange}>
             <option>Payment Method</option>
-            <option value="Hotel">GOPAY</option>
-            <option value="Vila">BCA</option>
+            <option value="GOPAY">GOPAY</option>
+            <option value="BCA">BCA</option>
           </Form.Select>
-          </div>
-          <div className="Price">
-            <p>Ticket Price: {concert.harga_tiket} IDR</p>
-            <p>Accomodation Price: {accommodation === "Hotel" ? "400,000" : accommodation === "Vila" ? "600,000" : "0"} IDR</p>
-            <p>Payment Total: {concert.harga_tiket + (accommodation === "Hotel" ? 400000 : accommodation === "Vila" ? 600000 : 0)} IDR</p>
-          </div>
+        </div>
+        <div className="Price">
+          <p>Ticket Price: {concert.harga_tiket} IDR</p>
+          <p>Accomodation Price: {accommodation === "Hotel" ? "400,000" : accommodation === "Vila" ? "600,000" : "0"} IDR</p>
+          <p>Payment Total: {paymentMethod === 'GOPAY' ? concert.harga_tiket * 0.9 : concert.harga_tiket} IDR</p>
         </div>
         <div className="PayButton" onClick={handlePay}>
           Submit Payment
