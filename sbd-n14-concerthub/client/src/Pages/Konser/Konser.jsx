@@ -1,6 +1,10 @@
+import { useParams, useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import './Konser.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import rex from '../../assets/rsz_rex_big.jpg';
+import Coldplay from '../../assets/Coldplay.png';
+import Bruno from '../../assets/Bruno.jpeg';
+import Westlife from '../../assets/rsz_weslife_big.jpg';
 
 const Konser = () => {
   const { konserId } = useParams();
@@ -9,34 +13,58 @@ const Konser = () => {
 
   useEffect(() => {
     fetchConcert();
-  }, []);
+  }, [konserId]);
+
+  const isConcert = (data) => {
+    return data.konser_id.toString() === konserId;
+  };
 
   const fetchConcert = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/konser/${konserId}`);
+      const response = await fetch('http://localhost:4000/getkonser');
+      if (!response.ok) {
+        throw new Error('Failed to fetch concert data');
+      }
       const data = await response.json();
-      setConcert(data);
+      const index = data.findIndex(isConcert);
+
+      setConcert(data[index]);
+      console.log(data[index]); // Process the data as needed
     } catch (error) {
       console.error('Error:', error);
     }
-  };
-
-  const handleBuyNow = () => {
-    // Handle buy now functionality
-  };
-
-  const handleViewProfile = () => {
-    // Handle view profile functionality
   };
 
   if (!concert) {
     return <div>Loading...</div>;
   }
 
+  const getImageByKonserId = (konserId) => {
+    const imageMap = {
+      3: rex,
+      1: Coldplay,
+      2: Bruno,
+      4: Westlife,
+    };
+
+    return imageMap[konserId] || null;
+  };
+
+  const handleBuyNow = () => {
+    navigate('/order');
+    // Handle buy now functionality
+  };
+
+  const handleViewProfile = () => {
+    navigate(`/performer/${concert.performer_id}`);
+  };
+
+  const konserImage = getImageByKonserId(concert.konser_id);
+
   return (
     <div className="KonserPage">
       <div className="Gambar">
-        <img src={concert.image} alt={concert.nama_konser} />
+        <img src={konserImage} alt={concert.nama_konser} />
       </div>
       <div className="KonserInfoCard">
         <div className="ViewProfileButton" onClick={handleViewProfile}>
@@ -51,7 +79,7 @@ const Konser = () => {
         </div>
       </div>
       <div className="BuyCard">
-        <p>Only {concert.harga_tiket} idr!</p>
+        <p>Only {concert.harga_tiket} IDR!</p>
         <div className="BuyNowButton" onClick={handleBuyNow}>
           Reserve Now
         </div>

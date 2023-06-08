@@ -123,7 +123,7 @@ const Header = () => {
             <div className='slider-card' key={performer.performer_id}>
               <p className='slider-card-number'>{}</p>
               <div className="slider-img">
-                <img src={getPerformertPhoto(performer.performer_id)} alt="" />
+                <img className='performimg' src={getPerformertPhoto(performer.performer_id)} alt="" />
                 <img src={verify} className='verify' alt="" />
               </div>
               <Link to={`/Performer/${performer.performer_id}`}>

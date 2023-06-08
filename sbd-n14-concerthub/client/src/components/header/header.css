@@ -54,6 +54,18 @@
 
 }
 
+<<<<<<< HEAD
+=======
+.performimg{
+  width: 77px;
+  height: 77px;
+}
+
+.slider-card-name {
+  align-items: center;
+  justify-content: center;
+}
+>>>>>>> 0563d2ea95dfe7b7a0b69c52173be1e58f7f47d7
 .slider .slider-card{
   width: 180px !important;
   height: 200px !important;

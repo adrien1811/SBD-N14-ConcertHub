@@ -28,7 +28,7 @@
 .profile-pic img{
   border: 6px solid var(--color-bg);
   border-radius: 50%;
- width: 70%;
+  width: 70%;
 }
 .profile-pic h3{
   font-family: var(--font-family);
