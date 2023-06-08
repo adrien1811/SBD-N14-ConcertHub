@@ -8,6 +8,10 @@ const Performer = () => {
   const { id } = useParams(); // Access the parameter from the URL
   const [performer, setPerformer] = useState([]);
 
+  function isPerformer(data) {
+    return data.performer_id.toString() === id;
+  }
+
   useEffect(() => {
     getperformer();
   },[id]);
@@ -19,8 +23,10 @@ const Performer = () => {
         throw new Error('Failed to fetch performer data');
       }
       const data = await response.json();
-      setPerformer(data[id-2]);
-      console.log(data[id]); // Process the data as needed
+      const index = data.findIndex(isPerformer);
+
+      setPerformer(data[index]);
+      console.log(data[index]); // Process the data as needed
     } catch (error) {
       console.error('Error:', error);
     }
