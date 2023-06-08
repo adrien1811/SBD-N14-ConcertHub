@@ -8,7 +8,10 @@ const bcrypt = require("bcrypt");
 const session = require('express-session');
 
 //middleware
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
+
 app.use(express.json());
 
 app.use(session({
