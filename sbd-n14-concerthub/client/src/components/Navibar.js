@@ -7,25 +7,36 @@ import { Link } from "react-router-dom";
 const Navibar = () => {
   const [username, setUsername] = useState('');
 
-useEffect(() => {
-  fetch('http://localhost:4000/dashboard', { credentials: 'include' })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+  useEffect(() => {
+    const fetchSessionData = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/dashboard', { credentials: 'include' });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        if (data && data.message === 'Login successful') {
+          setUsername(data.username);
+        }
+      } catch (error) {
+        console.log(error);
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      if (data && data.message === 'Login successful') {
-        setUsername(data.username);
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
-}, []);
+    };
 
+    fetchSessionData();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/logout', { credentials: 'include' });
+      if (!response.ok) {
+        throw new Error('Logout failed');
+      }
+      setUsername('');
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -49,7 +60,10 @@ useEffect(() => {
           </Nav>
           <Nav>
             {username ? (
-              <p>Hello, {username}</p>
+              <>
+                <p>Hello, {username}</p>
+                <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+              </>
             ) : (
               <Nav.Link href="/RegisterLogin">Login/Register</Nav.Link>
             )}
@@ -58,6 +72,6 @@ useEffect(() => {
       </Navbar>
     </>
   );
-}
+};
 
 export default Navibar;

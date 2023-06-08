@@ -38,37 +38,36 @@ const Order = () => {
     }
   };
 
-  const handlePay = () => {
-    const username = document.getElementById('username').value;
-    const phoneNumber = document.getElementById('phoneNumber').value;
-    const email = document.getElementById('email').value;
+const handlePay = () => {
+  const username = document.getElementById('username').value;
+  const phoneNumber = document.getElementById('phoneNumber').value;
+  const email = document.getElementById('email').value;
 
-    let harga_akomodasi = 0;
-    if (accommodation === 'Hotel') {
-      harga_akomodasi = 400000;
-    } else if (accommodation === 'Vila') {
-      harga_akomodasi = 600000;
-    }
+  let harga_akomodasi = 0;
+  if (accommodation === 'Hotel') {
+    harga_akomodasi = 400000;
+  } else if (accommodation === 'Vila') {
+    harga_akomodasi = 600000;
+  }
 
-    const totalPayment = concert.harga_tiket + harga_akomodasi;
-    let discountedPayment = totalPayment;
+  let totalPayment = concert.harga_tiket + harga_akomodasi;
 
-    if (paymentMethod === 'GOPAY') {
-      discountedPayment = totalPayment * 0.9; // 10% discount for GOPAY
-    }
+  if (paymentMethod === 'GOPAY') {
+    totalPayment *= 0.9; // Apply 10% discount for GOPAY
+  }
 
-    const orderData = {
-      nama_pemesan: username,
-      no_telpon: phoneNumber,
-      email,
-      jenis_accomodation: accommodation,
-      jumlah_payment: discountedPayment,
-      metode_pembayaran: paymentMethod
-    };
-
-    console.log(orderData);
-    // Rest of the code remains the same
+  const orderData = {
+    nama_pemesan: username,
+    no_telpon: phoneNumber,
+    email,
+    jenis_accomodation: accommodation,
+    jumlah_payment: totalPayment,
+    metode_pembayaran: paymentMethod,
   };
+
+  console.log(orderData);
+  // Rest of the code remains the same
+};
 
   const handleAccommodationChange = (event) => {
     setAccommodation(event.target.value);
@@ -121,7 +120,7 @@ const Order = () => {
           </Form.Select>
         </div>
         <div className="PaymentMethod">
-          <Form.Select id="paymentMethod" aria-label="PaymentMethod" onChange={handlePaymentMethodChange}>
+          <Form.Select id="PaymentMethod" aria-label="PaymentMethod" onChange={handlePaymentMethodChange}>
             <option>Payment Method</option>
             <option value="GOPAY">GOPAY</option>
             <option value="BCA">BCA</option>
@@ -130,7 +129,12 @@ const Order = () => {
         <div className="Price">
           <p>Ticket Price: {concert.harga_tiket} IDR</p>
           <p>Accomodation Price: {accommodation === "Hotel" ? "400,000" : accommodation === "Vila" ? "600,000" : "0"} IDR</p>
-          <p>Payment Total: {paymentMethod === 'GOPAY' ? concert.harga_tiket * 0.9 : concert.harga_tiket} IDR</p>
+          <p>
+                 Payment Total: {paymentMethod === "GOPAY"
+                ? (concert.harga_tiket + (accommodation === "Hotel" ? 400000 : accommodation === "Vila" ? 600000 : 0)) * 0.9
+                : concert.harga_tiket + (accommodation === "Hotel" ? 400000 : accommodation === "Vila" ? 600000 : 0)
+           } IDR
+        </p>
         </div>
         <div className="PayButton" onClick={handlePay}>
           Submit Payment

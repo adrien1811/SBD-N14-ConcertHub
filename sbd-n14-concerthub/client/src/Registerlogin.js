@@ -75,10 +75,10 @@ const Registerlogin = () => {
           password
         })
       });
-
+  
       if (response.ok) {
         const data = await response.json();
-        const userId = data.user_id;
+        const userId = data.userId; // Corrected property name
         // Handle successful login
         // For example, navigate to a different page or show a success message
         console.log('Login successful!');
@@ -96,6 +96,7 @@ const Registerlogin = () => {
       console.error('An error occurred during login:', error);
     }
   };
+  
 
   return (
     <div className="page">

@@ -8,22 +8,19 @@ const Userprofile = (userId) => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/getuser?user_id=${userId}`, { credentials: 'include' })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(data);
-        if (data && data.length > 0) {
-          setUser(data[0]); // Assuming the response contains a single user object
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    fetch('http://localhost:4000/user', { credentials: 'include' })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Process the data
+    })
+    .catch(error => {
+      console.log('Error occurred during fetch:', error);
+    });
   }, []);
 
   return (
