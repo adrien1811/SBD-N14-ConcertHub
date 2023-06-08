@@ -24,8 +24,12 @@ const Header = () => {
   const fetchPerformer = async () => {
     try {
       const response = await fetch('http://localhost:4000/getperformer');
+      if (!response.ok) {
+        throw new Error('Failed to fetch performer data');
+      }
       const data = await response.json();
       setPerformer(data);
+      console.log(data); // Process the data as needed
     } catch (error) {
       console.error('Error:', error);
     }
@@ -115,7 +119,7 @@ const Header = () => {
        <Slider {...settings} className='slider'>
        {performer.map((performer) => (
             <div className='slider-card' key={performer.performer_id}>
-              <p className='slider-card-number'>{performer.performer_id}</p>
+              <p className='slider-card-number'>{}</p>
               <div className="slider-img">
                 <img src={getPerformertPhoto(performer.performer_id)} alt="" />
                 <img src={verify} className='verify' alt="" />
