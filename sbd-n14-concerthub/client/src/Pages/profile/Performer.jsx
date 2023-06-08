@@ -5,7 +5,7 @@ import profile_banner from '../../assets/profile_banner.png'
 import profile_pic from '../../assets/profile.jpg'
 
 import seller1 from '../../assets/coldplays.jpg'
-import seller2 from '../../assets/bruno.jpg'
+import seller2 from '../../assets/brunofull.jpg'
 import seller3 from '../../assets/rexorange.jpg'
 import seller4 from '../../assets/westlife.jpg'
 

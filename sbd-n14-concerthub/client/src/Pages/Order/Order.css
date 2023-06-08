@@ -1,8 +1,8 @@
-.Coldplay img{
-    top:50px;
+  .gmbr{
+    top:200px;
     margin-bottom: 650px;
     margin-left: 425px;
-    position: relative; 
+    position: absolute; 
   }
   .Cover {
     position: absolute; 
@@ -10,7 +10,7 @@
     width: 675px;
     height: 40em;
     margin-left: 130px;
-    bottom:485px;
+    top: 550px;
     position: relative;
     border-radius: 2em;
     display: flex;
@@ -19,7 +19,7 @@
     justify-content: center;
     font-family: Arial;
     left: 300px;
-    margin-top: 0px;
+    margin-bottom: 600px;
   }
   .Username {
     position: absolute;
@@ -49,15 +49,26 @@
     font-size: 14px;
     color: #333;
   }
+  .PaymentMethod{
+    width: 175px;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+  }
   .Price {
     color: white;
     position: absolute;
-    top:70px;
+    top:115px;
     justify-content: center;
     font-size: 12px;
   }
   .PayButton {
-    margin-top: 400px;
+    margin-top: 495px;
     align-items: center;
     background-color: rgb(5, 41, 153);
     border: 0;

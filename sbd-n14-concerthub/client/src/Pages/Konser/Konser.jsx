@@ -51,7 +51,7 @@ const Konser = () => {
   };
 
   const handleBuyNow = () => {
-    navigate('/order');
+    navigate(`/order/${concert.konser_id}`);
     // Handle buy now functionality
   };
 

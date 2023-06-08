@@ -24,6 +24,7 @@ const App = () => {
           <Route path ="/Topup" element = {<Topup/>}/>
           <Route path="/konser/:konserId" element={<Konser />} />
           <Route path ="/Order" element = {<Order/>}/>
+          <Route path="/order/:konserId" element={<Order />} />
         </Routes>
       </Router>
          <Footer/>
