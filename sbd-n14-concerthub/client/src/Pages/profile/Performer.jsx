@@ -19,7 +19,7 @@ const Performer = () => {
         throw new Error('Failed to fetch performer data');
       }
       const data = await response.json();
-      setPerformer(data[id]);
+      setPerformer(data[id-2]);
       console.log(data[id]); // Process the data as needed
     } catch (error) {
       console.error('Error:', error);
