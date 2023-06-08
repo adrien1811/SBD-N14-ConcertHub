@@ -332,7 +332,25 @@ app.get('/getperformer', async (req, res) => {
     console.error(err.message);
   }
 });
+app.get('/performer/:id', (req, res) => {
+  const performerId = req.params.id;
+  const query = `SELECT * FROM performer WHERE performer_id = $1`;
+  pool.query(query, [performerId], (err, result) => {
+    if (err) {
+      console.error('Error executing query', err);
+      return res.status(500).json({ error: 'An error occurred' });
+    }
 
+    // Check if a performer with the given ID exists
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Performer not found' });
+    }
+
+    // Return the performer information
+    const performer = result.rows[0];
+    res.json(performer);
+  });
+});
 //Menunjukkan performer tertentu
 app.get('performer/:performer_id', async (req, res) => {
   const { performer_id } = req.params;

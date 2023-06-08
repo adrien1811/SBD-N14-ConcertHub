@@ -11,6 +11,10 @@ import seller5 from '../../assets/seller5.png'
 import seller6 from '../../assets/seller6.jpg'
 import verify from '../../assets/verify.png'
 import gojek from '../../assets/Gojek.png'
+import rexorange from '../../assets/Rex.jpeg';
+import Coldplays from '../../assets/Coldplay.png';
+import Brunomajor from '../../assets/Bruno.jpeg';
+import Weslife from '../../assets/weslife.jpeg';
 import { Link  } from 'react-router-dom';
 
 const Header = () => {
