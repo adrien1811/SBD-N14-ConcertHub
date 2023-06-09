@@ -29,6 +29,7 @@ const Registerlogin = () => {
     try {
       const response = await fetch('http://localhost:4000/register', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -67,6 +68,7 @@ const Registerlogin = () => {
     try {
       const response = await fetch('http://localhost:4000/login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -149,6 +151,18 @@ const Registerlogin = () => {
             <div className="loginbutton" onClick={handleLogin}>Login</div>
           </>
         )}
+
+        <div className={popupStyle}>
+          <h3>Login Failed</h3>
+          <p>Username or Password incorrect</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Registerlogin;
+
 
         <div className={popupStyle}>
           <h3>Login Failed</h3>
