@@ -381,16 +381,19 @@ app.get('/performer/:performer_id', async (req, res) => {
   }
 });
 
-//Menunjukkan informasi user
+
 app.get('/user', async (req, res) => {
   try {
-
-    const userId = req.session.user; // Retrieve the user ID from the session
+    const userId = req.session.user;
+    console.log('User ID from session:', userId);
 
     if (userId) {
       const User = await pool.query("SELECT * FROM USERR WHERE user_id = $1", [userId]);
-      res.json(User.rows);
+      const userData = User.rows[0]; // Assuming there is only one user with the given user_id
+      console.log('User data from database:', userData);
+      res.json(userData); // Return the user data as JSON
     } else {
+      console.log('User ID not found in the session');
       res.status(401).json({ error: 'User ID not found in the session' });
     }
   } catch (err) {
@@ -398,7 +401,6 @@ app.get('/user', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 //Menunjukkan informasi di home
 app.get('/home', async (req, res) => {
