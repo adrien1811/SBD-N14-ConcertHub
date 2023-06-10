@@ -17,7 +17,12 @@ const Bids = ({ title }) => {
 
   const fetchConcerts = async () => {
     try {
-      const response = await fetch('http://localhost:4000/getkonser');
+      const response = await fetch('http://localhost:4000/getkonser', {
+        credentials: 'include', // Include credentials (session cookies)
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       const data = await response.json();
       setConcerts(data);
     } catch (error) {
@@ -34,7 +39,7 @@ const Bids = ({ title }) => {
   };
 
   const getConcertPhoto = (konserId) => {
-    return concertPhotos[konserId]; 
+    return concertPhotos[konserId];
   };
 
   return (
@@ -43,7 +48,7 @@ const Bids = ({ title }) => {
         <div className="bids-container-text">
           <h1>{title}</h1>
         </div>
-        
+
         <div className="bids-container-card">
           {concerts.map((concert) => (
             <div className="card-column" key={concert.konser_id}>
@@ -52,7 +57,7 @@ const Bids = ({ title }) => {
                   <img
                     src={getConcertPhoto(concert.konser_id)}
                     alt={`Concert ${concert.konser_id}`}
-                  /> {/* Use the getConcertPhoto function to retrieve the appropriate photo URL */}
+                  />
                   <Link to={`/konser/${concert.konser_id}`}>
                     <p className="bids-title">{concert.nama_konser}</p>
                   </Link>

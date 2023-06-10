@@ -3,24 +3,25 @@ import './userprofile.css';
 import { useNavigate } from 'react-router-dom';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const Userprofile = (userId) => {
+const Userprofile = (props) => {
+  const userId = props.userId;
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetch('http://localhost:4000/user', { credentials: 'include' })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Process the data
-    })
-    .catch(error => {
-      console.log('Error occurred during fetch:', error);
-    });
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setUser(data);
+      })
+      .catch(error => {
+        console.log('Error occurred during fetch:', error);
+      });
   }, []);
 
   return (

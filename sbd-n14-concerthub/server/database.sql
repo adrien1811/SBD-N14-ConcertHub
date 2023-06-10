@@ -16,7 +16,8 @@ CREATE TABLE USERR(
     balance_BCA int,
     balance_GOPAY int,
 );
-
+ALTER TABLE USERR
+DROP order_id;
 CREATE TABLE ORDER_TICKET(
     User_id int NOT NULL,
     Order_id serial UNIQUE NOT NULL PRIMARY KEY,

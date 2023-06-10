@@ -25,7 +25,10 @@ const Header = () => {
 
   const fetchPerformer = async () => {
     try {
-      const response = await fetch('http://localhost:4000/getperformer');
+      const response = await fetch('http://localhost:4000/getperformer', {
+        method: 'GET',
+        credentials: 'include', // Include credentials to send cookies
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch performer data');
       }
