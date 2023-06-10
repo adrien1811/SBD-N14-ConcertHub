@@ -32,8 +32,10 @@ const TopUp = () => {
       // Make the HTTP request to the backend API based on the selected balance
       if (selectedBalance === 'Gopay') {
         topUpBalance('TopUpGOPAY');
+        window.location.reload();
       } else if (selectedBalance === 'BCA') {
         topUpBalance('TopUpBCA');
+        window.location.reload();
       }
     }
   };

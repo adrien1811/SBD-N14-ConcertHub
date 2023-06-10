@@ -88,6 +88,7 @@ const Registerlogin = () => {
         console.log('Login successful!');
         //console.log('User ID:', userId);
         navigate('/');
+        window.location.reload();
       } else {
         // Handle login error
         // For example, display an error message to the user
