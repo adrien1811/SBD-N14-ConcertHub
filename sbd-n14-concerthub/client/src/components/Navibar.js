@@ -8,23 +8,23 @@ const Navibar = () => {
   const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const fetchSessionData = async () => {
-      try {
-        const response = await fetch('http://localhost:4000/dashboard', { credentials: 'include' });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (data && data.message === 'Login successful') {
-          setUsername(data.username);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
     fetchSessionData();
   }, []);
+
+  const fetchSessionData = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/dashboard', { credentials: 'include' });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      if (data && data.username) {
+        setUsername(data.username);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -56,12 +56,11 @@ const Navibar = () => {
           <Nav className="me-auto">
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="/userprofile">tombol Profile sementara</Nav.Link>
           </Nav>
           <Nav>
             {username ? (
               <>
-                <p>Hello, {username}</p>
+                <Nav.Link href="/userprofile">{username}</Nav.Link>
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </>
             ) : (

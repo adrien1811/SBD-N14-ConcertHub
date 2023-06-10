@@ -67,6 +67,7 @@ const Registerlogin = () => {
     try {
       const response = await fetch('http://localhost:4000/login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -78,11 +79,14 @@ const Registerlogin = () => {
   
       if (response.ok) {
         const data = await response.json();
-        const userId = data.userId; // Corrected property name
+        const { message, userId } = data;
+        console.log(message);
+        console.log('User ID:', userId);
+        //const userId = data.userId; // Corrected property name
         // Handle successful login
         // For example, navigate to a different page or show a success message
         console.log('Login successful!');
-        console.log('User ID:', userId);
+        //console.log('User ID:', userId);
         navigate('/');
       } else {
         // Handle login error
@@ -90,6 +94,9 @@ const Registerlogin = () => {
         showPopup("login-popup");
         setTimeout(() => showPopup("hide"), 3000);
         console.error('Login failed.');
+        const errorData = await response.json();
+        const { error } = errorData;
+        console.error(error);
       }
     } catch (error) {
       // Handle any network or server errors
