@@ -17,6 +17,7 @@ const Userprofile = (props) => {
         return response.json();
       })
       .then(data => {
+        console.log('Response data:', data); // Log the response data received from the backend
         setUser(data);
       })
       .catch(error => {
@@ -60,8 +61,8 @@ const Userprofile = (props) => {
             <h4>Name: {user.username}</h4>
             <h4>Email: {user.email}</h4>
             <h4>Phonenumber: {user.no_telpon}</h4>
-            <h4>Gopay Balance: {user.balance_GOPAY}</h4>
-            <h4>BCA Balance: {user.balance_BCA}</h4>
+            <h4>Gopay Balance: {user.balance_gopay}</h4>
+            <h4>BCA Balance: {user.balance_bca}</h4>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
