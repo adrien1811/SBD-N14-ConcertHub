@@ -8,8 +8,10 @@ const bcrypt = require("bcrypt");
 const session = require('express-session');
 
 //middleware
+
 app.use(cors({
-  origin: "*"
+  origin: 'http://localhost:3000',
+  credentials: true
 }));
 
 app.use(express.json());
@@ -23,10 +25,6 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000, // 24 hours
   },
 }));
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true,
-};
 
 app.use(cors(corsOptions));
 
@@ -69,12 +67,16 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.get('/dashboard', (req, res) => {
-  const username = req.session.username;
-  if (username) {
-    res.json({ username: username });
+app.get('/dashboard/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  // Retrieve user data from the session
+  const userData = req.session.userData;
+
+  if (userData && userData.userId === userId) {
+    res.json(userData);
   } else {
-    res.status(401).json({ error: 'Not logged in' });
+    res.status(404).json({ error: 'User not found' });
   }
 });
 

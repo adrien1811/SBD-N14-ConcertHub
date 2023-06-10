@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import { useNavigate } from "react-router-dom";
 import "./Registerlogin.css";
 import logo from './Group1.png';
-
+import Cookies from 'universal-cookie';
 
 const Registerlogin = () => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const Registerlogin = () => {
         const data = await response.json();
         const insertedUserId = data.user_id;
         // Handle successful registration
-        // For example, navigate to a different page or show a success message
+        // For example, navigate to a different page or show a success message                                                 
         console.log('Registration successful!');
         console.log('User ID:', insertedUserId);
         setRegisterFinished(true);
@@ -61,7 +61,7 @@ const Registerlogin = () => {
       // Handle any network or server errors
       console.error('An error occurred during registration:', error);
     }
-  };
+  }; 
 
   const handleLogin = async () => {
     try {
@@ -70,33 +70,19 @@ const Registerlogin = () => {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include', // Include credentials (session cookie)
         body: JSON.stringify({
           username,
           password
         })
       });
   
-      if (response.ok) {
-        const data = await response.json();
-        const userId = data.userId; // Corrected property name
-        // Handle successful login
-        // For example, navigate to a different page or show a success message
-        console.log('Login successful!');
-        console.log('User ID:', userId);
-        navigate('/');
-      } else {
-        // Handle login error
-        // For example, display an error message to the user
-        showPopup("login-popup");
-        setTimeout(() => showPopup("hide"), 3000);
-        console.error('Login failed.');
-      }
+      // Rest of the code...
     } catch (error) {
       // Handle any network or server errors
       console.error('An error occurred during login:', error);
     }
   };
-  
 
   return (
     <div className="page">

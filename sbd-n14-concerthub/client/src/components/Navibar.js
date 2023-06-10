@@ -3,6 +3,8 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from "react-router-dom";
+import Cookies from 'universal-cookie';
+
 
 const Navibar = () => {
   const [username, setUsername] = useState('');
@@ -10,29 +12,44 @@ const Navibar = () => {
   useEffect(() => {
     const fetchSessionData = async () => {
       try {
-        const response = await fetch('http://localhost:4000/dashboard', { credentials: 'include' });
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const data = await response.json();
-        if (data && data.message === 'Login successful') {
-          setUsername(data.username);
+        const cookies = new Cookies();
+        const userId = cookies.get('userId');
+  
+        if (userId) {
+          const response = await fetch(`http://localhost:4000/dashboard/${userId}`, {
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+  
+          if (response.ok) {
+            const data = await response.json();
+            const username = data.username;
+  
+            // Handle user data
+            console.log('Username:', username);
+          } else {
+            // Handle error
+            console.error('Error retrieving user data.');
+          }
         }
       } catch (error) {
-        console.log(error);
+        // Handle any network or server errors
+        console.error('An error occurred:', error);
       }
     };
-
+  
     fetchSessionData();
   }, []);
-
   const handleLogout = async () => {
     try {
       const response = await fetch('http://localhost:4000/logout', { credentials: 'include' });
-      if (!response.ok) {
+      if (response.ok) {
+        setUsername('');
+      } else {
         throw new Error('Logout failed');
       }
-      setUsername('');
     } catch (error) {
       console.log(error);
     }
