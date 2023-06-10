@@ -280,6 +280,23 @@ app.put('/user/TopUpBCA', async (req, res) => {
   }
 });
 
+app.get('/user/balance', async (req, res) => {
+  try {
+    const userId = req.session.user; // Retrieve the user ID from the session
+
+    if (userId) {
+      const user = await pool.query('SELECT balance_GOPAY, balance_BCA FROM USERR WHERE user_id = $1', [userId]);
+      const { balance_gopay, balance_bca } = user.rows[0];
+      res.json({ gopayBalance: balance_gopay, bcaBalance: balance_bca });
+    } else {
+      res.status(401).json({ error: 'User ID not found in the session' });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // Menunjukkan tiket yang dimiliki oleh user
 app.get('/user/tickets', async (req, res) => {
   const userId = req.session.user; // Retrieve the user ID from the session
