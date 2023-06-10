@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Topup.css';
 import Logo from '../../assets/Group1.png';
 import Form from 'react-bootstrap/Form';
 
-
 const TopUp = () => {
-  const [amount, setAmount] = useState(''); // State for storing the top-up amount
-  const [selectedBalance, setSelectedBalance] = useState(''); // State for storing the selected balance option
+  const [amount, setAmount] = useState('');
+  const [selectedBalance, setSelectedBalance] = useState('');
+  const [gopayBalance, setGopayBalance] = useState(0);
+  const [bcaBalance, setBcaBalance] = useState(0);
+
+  useEffect(() => {
+    fetch('http://localhost:4000/user/balance', { credentials: 'include' })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setGopayBalance(data.gopayBalance);
+        setBcaBalance(data.bcaBalance);
+      })
+      .catch(error => {
+        console.log('Error occurred during fetch:', error);
+      });
+  }, []);
 
   const handleTopup = () => {
     // Check if the amount and selectedBalance are not empty
@@ -22,9 +40,9 @@ const TopUp = () => {
 
   const topUpBalance = async (endpoint) => {
     try {
-      // Make the HTTP request to the backend API
-      const response = await fetch('http://localhost:4000/Topup', {
+      const response = await fetch(`http://localhost:4000/user/${endpoint}`, {
         method: 'PUT',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -37,6 +55,8 @@ const TopUp = () => {
         // Display a success message and update the balance in the frontend
         console.log(data.message);
         console.log('New balance:', data.newBalance);
+        setGopayBalance(data.newGopayBalance);
+        setBcaBalance(data.newBcaBalance);
       } else {
         // Handle the error from the backend
         const errorData = await response.json();
@@ -58,27 +78,27 @@ const TopUp = () => {
             <h1>Balance Information</h1>
           </div>
           <div className="Balance">
-            <p>Balance Gopay : Rp. 100.000</p>
-            <p>Balance BCA : Rp. 100.000</p>
-        </div>
-        <div className="heading2">
+            <p>Balance Gopay: Rp. {gopayBalance}</p>
+            <p>Balance BCA: Rp. {bcaBalance}</p>
+          </div>
+          <div className="heading2">
             <h1>Top Up Now!</h1>
           </div>
           <div className="Topup">
-          <input type="text" placeholder="Amount" required />
+            <input type="text" placeholder="Amount" value={amount} onChange={e => setAmount(e.target.value)} required />
           </div>
           <div className="Dropdown">
-          <Form.Select aria-label="Dropdown">
-                <option>Select Balance</option>
-                <option value="Gopay">Gopay</option>
-                <option value="BCA">BCA</option>
-              </Form.Select>
+            <Form.Select aria-label="Dropdown" value={selectedBalance} onChange={e => setSelectedBalance(e.target.value)}>
+              <option>Select Balance</option>
+              <option value="Gopay">Gopay</option>
+              <option value="BCA">BCA</option>
+            </Form.Select>
           </div>
           <div className="TopupButton" onClick={handleTopup}>
-              Top Up
-            </div>
+            Top Up
+          </div>
+        </div>
       </div>
-    </div>
     </div>
   );
 };
