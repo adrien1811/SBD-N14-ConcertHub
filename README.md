@@ -123,5 +123,10 @@ This is all enum value used in this project
 # UML
 ![CONCERTHUB](https://github.com/adrien1811/SBD-N14-ConcertHub/assets/87458424/a835303d-9bdf-43b2-a85d-def1440668cf)
 
+# ERD
+![ERD Diagram](https://github.com/adrien1811/SBD-N14-ConcertHub/assets/87458424/e856f208-9c1c-42fa-b34a-d74a91e22856)
+
+# Flowchart
+![Flowchart](https://github.com/adrien1811/SBD-N14-ConcertHub/assets/87458424/0688f7da-a96a-4329-85de-3ed4545090f5)
 
 
