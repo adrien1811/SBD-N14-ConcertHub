@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
-import { useParams } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 import "./Order.css";
 import rex from '../../assets/rsz_rex_big.jpg';
 import Coldplay from '../../assets/Coldplay.png';
 import Bruno from '../../assets/Bruno.jpeg';
 import Westlife from '../../assets/rsz_weslife_big.jpg';
-import { useNavigate } from "react-router-dom";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 
 const Order = () => {
   const navigate = useNavigate();
@@ -18,13 +17,32 @@ const Order = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailureModal, setShowFailureModal] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     fetchConcert();
+    fetchUser();
   }, [konserId]);
 
   const isConcert = (data) => {
     return data.konser_id.toString() === konserId;
+  };
+
+  const fetchUser = () => {
+    fetch('http://localhost:4000/user', { credentials: 'include' })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Response data:', data); // Log the response data received from the backend
+        setUser(data);
+      })
+      .catch(error => {
+        console.log('Error occurred during fetch:', error);
+      });
   };
 
   const fetchConcert = async () => {
@@ -47,29 +65,29 @@ const Order = () => {
     const username = document.getElementById("username").value;
     const phoneNumber = document.getElementById("phoneNumber").value;
     const email = document.getElementById("email").value;
-  
+
     let harga_akomodasi = 0;
     if (accommodation === "hotel") {
       harga_akomodasi = 400000;
     } else if (accommodation === "vila") {
       harga_akomodasi = 600000;
     }
-  
+
     let totalPayment = concert.harga_tiket + harga_akomodasi;
-  
+
     if (paymentMethod === "GOPAY") {
       totalPayment *= 0.9; // Apply 10% discount for GOPAY
     }
-  
+
     const orderData = {
       nama_pemesan: username,
       no_telpon: phoneNumber,
       email,
       jenis_accomodation: accommodation,
-      harga_akomodasi: harga_akomodasi,
+      harga_akomodasi,
       metode_pembayaran: paymentMethod
     };
-  
+
     try {
       const response = await fetch(`http://localhost:4000/konser/${konserId}/order`, {
         method: "POST",
@@ -79,7 +97,7 @@ const Order = () => {
         },
         body: JSON.stringify(orderData),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         // Handle successful payment
@@ -99,7 +117,7 @@ const Order = () => {
       // Handle any network or server errors
       console.error('An error occurred during payment:', error);
     }
-  };  
+  };
 
   const handleAccommodationChange = (event) => {
     setAccommodation(event.target.value);
@@ -112,6 +130,7 @@ const Order = () => {
   if (!concert) {
     return <div>Loading...</div>;
   }
+
   const handleCloseSuccessModal = () => {
     setShowSuccessModal(false);
     navigate('/');
@@ -152,13 +171,17 @@ const Order = () => {
         <div className="Email">
           <input id="email" type="email" placeholder="Email" required />
         </div>
-        <div className="Accomodation">
-          <Form.Select id="accommodation" aria-label="Accomodation" onChange={handleAccommodationChange}>
-            <option>Accomodation</option>
-            <option value="hotel">hotel</option>
-            <option value="vila">vila</option>
-          </Form.Select>
-        </div>
+
+        {user && user.status_user !== "normal" && (
+          <div className="Accomodation">
+            <Form.Select id="accommodation" aria-label="Accommodation" onChange={handleAccommodationChange}>
+              <option>Accommodation</option>
+              <option value="hotel">hotel</option>
+              <option value="vila">vila</option>
+            </Form.Select>
+          </div>
+        )}
+
         <div className="PaymentMethod">
           <Form.Select id="PaymentMethod" aria-label="PaymentMethod" onChange={handlePaymentMethodChange}>
             <option>Payment Method</option>
@@ -168,13 +191,13 @@ const Order = () => {
         </div>
         <div className="Price">
           <p>Ticket Price: {concert.harga_tiket} IDR</p>
-          <p>Accomodation Price: {accommodation === "hotel" ? "400,000" : accommodation === "vila" ? "600,000" : "0"} IDR</p>
+          <p>Accommodation Price: {accommodation === "hotel" ? "400,000" : accommodation === "vila" ? "600,000" : "0"} IDR</p>
           <p>
-                Payment Total: {paymentMethod === "GOPAY"
-                ? (concert.harga_tiket + (accommodation === "hotel" ? 400000 : accommodation === "vila" ? 600000 : 0)) * 0.9
-                : concert.harga_tiket + (accommodation === "hotel" ? 400000 : accommodation === "vila" ? 600000 : 0)
-          } IDR
-        </p>
+            Payment Total: {paymentMethod === "GOPAY"
+              ? (concert.harga_tiket + (accommodation === "hotel" ? 400000 : accommodation === "vila" ? 600000 : 0)) * 0.9
+              : concert.harga_tiket + (accommodation === "hotel" ? 400000 : accommodation === "vila" ? 600000 : 0)
+            } IDR
+          </p>
         </div>
         <div className="PayButton" onClick={handlePay}>
           Submit Payment
@@ -208,7 +231,6 @@ const Order = () => {
         </Modal.Footer>
       </Modal>
     </div>
-    
   );
 };
 
