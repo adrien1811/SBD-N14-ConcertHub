@@ -76,6 +76,8 @@ const Konser = () => {
           <p>City: {concert.kota_perform}</p>
           <p>Venue: {concert.venue}</p>
           <p>Date: {concert.tanggal_perform}</p>
+          <p>Capacity: {concert.kapasitas}</p>
+          <p>Privilege Capacity: {concert.kapasitas_privillege}</p>
         </div>
       </div>
       <div className="BuyCard">
