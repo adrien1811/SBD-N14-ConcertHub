@@ -8,13 +8,13 @@
   <a href="https://github.com/adrien1811">
     Adrien Ardra 
   </a>
-  - 
+  - 2106731485
 </h3>
 <h3 align="center">
   <a href="https://github.com/NaufalFeb">
     Naufal Febriyanto
   </a>
-  - 
+  - 2106702674
 </h3>
 <h3 align="center">
   <a href="https://github.com/JGDoubleP">
