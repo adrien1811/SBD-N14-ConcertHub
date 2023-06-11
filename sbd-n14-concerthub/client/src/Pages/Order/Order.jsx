@@ -7,6 +7,8 @@ import Coldplay from '../../assets/Coldplay.png';
 import Bruno from '../../assets/Bruno.jpeg';
 import Westlife from '../../assets/rsz_weslife_big.jpg';
 import { useNavigate } from "react-router-dom";
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
 const Order = () => {
   const navigate = useNavigate();
@@ -14,6 +16,8 @@ const Order = () => {
   const [concert, setConcert] = useState(null);
   const [accommodation, setAccommodation] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showFailureModal, setShowFailureModal] = useState(false);
 
   useEffect(() => {
     fetchConcert();
@@ -83,11 +87,13 @@ const Order = () => {
         console.log('Payment successful!');
         console.log('Order ID:', data.order_id);
         console.log('Total Payment:', data.Total_payment);
+        setShowSuccessModal(true);
         navigate('/');
       } else {
         // Handle payment error
         // For example, display an error message to the user
         console.error('Payment failed.');
+        setShowFailureModal(true);
       }
     } catch (error) {
       // Handle any network or server errors
@@ -106,6 +112,14 @@ const Order = () => {
   if (!concert) {
     return <div>Loading...</div>;
   }
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+    navigate('/');
+  };
+
+  const handleCloseFailureModal = () => {
+    setShowFailureModal(false);
+  };
 
   const getImageByKonserId = (konserId) => {
     const imageMap = {
@@ -166,7 +180,35 @@ const Order = () => {
           Submit Payment
         </div>
       </div>
+      <Modal show={showSuccessModal} onHide={handleCloseSuccessModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Payment Successful</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Payment was successful!</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleCloseSuccessModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showFailureModal} onHide={handleCloseFailureModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Payment Failed</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Payment failed. Please try again.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleCloseFailureModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
+    
   );
 };
 
