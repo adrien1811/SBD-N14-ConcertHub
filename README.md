@@ -8,13 +8,13 @@
   <a href="https://github.com/adrien1811">
     Adrien Ardra 
   </a>
-  - 
+  - 2106731485
 </h3>
 <h3 align="center">
   <a href="https://github.com/NaufalFeb">
     Naufal Febriyanto
   </a>
-  - 
+  - 2106702674
 </h3>
 <h3 align="center">
   <a href="https://github.com/JGDoubleP">
@@ -125,16 +125,5 @@ This table is used to store Review by users.
 5. review_date
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+# UML
+![CONCERTHUB](https://github.com/adrien1811/SBD-N14-ConcertHub/assets/87458424/4b625a33-fe23-45c5-8002-9dd5e56aefdb)
