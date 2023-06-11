@@ -98,34 +98,56 @@ app.get('/logout', (req, res) => {
 app.post('/konser/:konser_id/order', async (req, res) => {
   try {
     const User_id = req.session.user; // Retrieve the user ID from the session
+    console.log('User ID from session in Order:', User_id);
     const { konser_id} = req.params;
+    console.log('konser_id from session in Order:', konser_id);
     const { nama_pemesan, no_telpon, email, jenis_accomodation, metode_pembayaran } = req.body;
+    console.log('nama_pemesan:', nama_pemesan);
+    console.log('no_telpon:', no_telpon);
+    console.log('email:', email);
+    console.log('jenis_accomodation:', jenis_accomodation);
+    console.log('metode_pembayaran:', metode_pembayaran);
+    
+
 
     // Fetch the konser details from the database
     const konser = await pool.query("SELECT * FROM KONSER WHERE konser_id = $1", [konser_id]);
     const harga_tiket = konser.rows[0].harga_tiket;
+    console.log('harga_tiket:', harga_tiket);
     let kapasitas = konser.rows[0].kapasitas;
+    console.log('kapasitas:', kapasitas);
     let kapasitas_privillege = konser.rows[0].kapasitas_privillege;
+    console.log('kapasitas_privillege:', kapasitas_privillege);
+    
 
     let harga_akomodasi = 0;
-    if (jenis_accomodation === 'hotel') {
-      harga_akomodasi = 400000;
-    } else if (jenis_accomodation === 'vila') {
-      harga_akomodasi = 600000;
-    }
-
-    const jumlah_payment = harga_tiket + harga_akomodasi;
-    let total_payment = jumlah_payment;
 
     // Fetch the user's status from the database
     const user = await pool.query("SELECT status_user, balance_GOPAY, balance_BCA FROM USERR WHERE user_id = $1", [User_id]);
     const userStatus = user.rows[0].status_user;
+    console.log('userStatus:', userStatus);
     const balance_GOPAY = user.rows[0].balance_gopay;
+    console.log('balance_gopay:', balance_GOPAY);
     const balance_BCA = user.rows[0].balance_bca;
+    console.log('balance_bca:', balance_BCA);
 
     // Check if the user's status is privileged or normal
-    if (userStatus === 'privillege' || typeof jenis_accomodation === 'undefined') {
+    if (userStatus === 'privillege') {
+      console.log('Barrier 1');
+
+      if (jenis_accomodation === 'hotel') {
+        harga_akomodasi = 400000;
+      } else if (jenis_accomodation === 'vila') {
+        harga_akomodasi = 600000;
+      }
+
+      const jumlah_payment = harga_tiket + harga_akomodasi;
+      let total_payment = jumlah_payment;
+      console.log('total_payment:', total_payment);
+
+      
       if (metode_pembayaran === 'GOPAY') {
+        console.log('Barrier 2');
         // Calculate the discount for GOPAY payment
         const discount = jumlah_payment * 0.1;
         total_payment = jumlah_payment - discount;
@@ -148,13 +170,15 @@ app.post('/konser/:konser_id/order', async (req, res) => {
 
           // Insert the order into the database
           const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, total_payment, metode_pembayaran]);
-
           const insertedOrderId = REGISTER.rows[0].order_id;
           res.json({ order_id: insertedOrderId, Total_payment: total_payment });
+          console.log('order_id:', insertedOrderId);
+          console.log('Total_payment:', jumlah_payment);
         } else {
           return res.status(400).json({ error: 'Insufficient balance in GOPAY' });
         }
       } else if (metode_pembayaran === 'BCA') {
+        console.log('Barrier 3');
         // Check if the user has sufficient balance in BCA
         if (balance_BCA >= jumlah_payment) {
           // Reduce the appropriate capacity based on user status
@@ -173,9 +197,10 @@ app.post('/konser/:konser_id/order', async (req, res) => {
 
           // Insert the order into the database
           const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, jenis_accomodation, harga_akomodasi, jumlah_payment, metode_pembayaran]);
-
           const insertedOrderId = REGISTER.rows[0].order_id;
           res.json({ order_id: insertedOrderId, Total_payment: jumlah_payment });
+          console.log('order_id:', insertedOrderId);
+          console.log('Total_payment:', jumlah_payment);
         } else {
           return res.status(400).json({ error: 'Insufficient balance in BCA' });
         }
@@ -183,8 +208,61 @@ app.post('/konser/:konser_id/order', async (req, res) => {
         return res.status(400).json({ error: 'Invalid payment method' });
       }
     } else {
-      res.status(403).json({ error: 'Unauthorized: Only privileged users can choose jenis_accomodation.' });
-    }
+      console.log('Barrier 4');
+
+      const jumlah_payment = harga_tiket + harga_akomodasi;
+      let total_payment = jumlah_payment;
+      console.log('total_payment:', total_payment);
+
+      if (metode_pembayaran === 'GOPAY') {
+        console.log('Barrier 5');
+        // Calculate the discount for GOPAY payment
+        const discount = jumlah_payment * 0.1;
+        total_payment = jumlah_payment - discount;
+
+        // Check if the user has sufficient balance in GOPAY
+        if (balance_GOPAY >= total_payment) {
+
+          // Update the balance_GOPAY, kapasitas, and kapasitas_privillege in the database
+          await pool.query("UPDATE USERR SET balance_GOPAY = $1 WHERE user_id = $2", [balance_GOPAY - total_payment, User_id]);
+          await pool.query("UPDATE KONSER SET kapasitas = $1, kapasitas_privillege = $2 WHERE konser_id = $3", [kapasitas, kapasitas_privillege, konser_id]);
+
+          // Set the status_order as 'paid'
+          const status_order = 'paid';
+
+          // Insert the order into the database
+          const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, harga_akomodasi, total_payment, metode_pembayaran]);
+          const insertedOrderId = REGISTER.rows[0].order_id;
+          res.json({ order_id: insertedOrderId, Total_payment: total_payment });
+          console.log('order_id:', insertedOrderId);
+          console.log('Total_payment:', jumlah_payment);
+        } else {
+          return res.status(400).json({ error: 'Insufficient balance in GOPAY' });
+        }
+      } else if (metode_pembayaran === 'BCA') {
+        console.log('Barrier 6');
+        // Check if the user has sufficient balance in BCA
+        if (balance_BCA >= jumlah_payment) {
+
+          // Update the balance_BCA, kapasitas, and kapasitas_privillege in the database
+          await pool.query("UPDATE USERR SET balance_BCA = $1 WHERE user_id = $2", [balance_BCA - jumlah_payment, User_id]);
+          await pool.query("UPDATE KONSER SET kapasitas = $1, kapasitas_privillege = $2 WHERE konser_id = $3", [kapasitas, kapasitas_privillege, konser_id]);
+
+          // Set the status_order as 'paid'
+          const status_order = 'paid';
+
+          // Insert the order into the database
+          const REGISTER = await pool.query("INSERT INTO ORDER_TICKET (User_id, konser_id, nama_pemesan, no_telpon, email, status_order, harga_akomodasi, jumlah_payment, metode_pembayaran) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING order_id", [User_id, konser_id, nama_pemesan, no_telpon, email, status_order, harga_akomodasi, jumlah_payment, metode_pembayaran]);
+          const insertedOrderId = REGISTER.rows[0].order_id;
+          res.json({ order_id: insertedOrderId, Total_payment: jumlah_payment });
+          console.log('order_id:', insertedOrderId);
+          console.log('Total_payment:', jumlah_payment);
+        } else {
+          return res.status(400).json({ error: 'Insufficient balance in BCA' });
+        }
+      } else {
+        return res.status(400).json({ error: 'Invalid payment method' });
+      }}
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Internal Server Error' });
