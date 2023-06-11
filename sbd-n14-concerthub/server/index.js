@@ -95,7 +95,7 @@ app.get('/logout', (req, res) => {
   });
 });
 
-app.post('/order', async (req, res) => {
+app.post('/konser/:konser_id/order', async (req, res) => {
   try {
     const User_id = req.session.user; // Retrieve the user ID from the session
     const { konser_id} = req.params;

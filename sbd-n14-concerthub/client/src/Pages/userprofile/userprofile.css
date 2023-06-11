@@ -25,6 +25,7 @@
   padding: 50px;
 }
 .item-content{
+  left: 450px;
   flex:1;
   display: flex;
   justify-content: flex-start;

@@ -6,8 +6,10 @@ import rex from '../../assets/rsz_rex_big.jpg';
 import Coldplay from '../../assets/Coldplay.png';
 import Bruno from '../../assets/Bruno.jpeg';
 import Westlife from '../../assets/rsz_weslife_big.jpg';
+import { useNavigate } from "react-router-dom";
 
 const Order = () => {
+  const navigate = useNavigate();
   const { konserId } = useParams();
   const [concert, setConcert] = useState(null);
   const [accommodation, setAccommodation] = useState("");
@@ -81,6 +83,7 @@ const Order = () => {
         console.log('Payment successful!');
         console.log('Order ID:', data.order_id);
         console.log('Total Payment:', data.Total_payment);
+        navigate('/');
       } else {
         // Handle payment error
         // For example, display an error message to the user
