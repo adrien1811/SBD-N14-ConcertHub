@@ -22,7 +22,7 @@
   </a>
   - 2106731573
 </h3>
-<p>All of which are undergradute student Computer Engineering Major, Department of Electrical Engineering, Faculty of Engineering, Universitas Indonesia.</p>
+<p>All of us are undergradute student of Computer Engineering Major, Department of Electrical Engineering, Faculty of Engineering, Universitas Indonesia.</p>
 
 ## Overview
 ConcertHub - Your Ultimate Concert Ticket Buying Platform
