@@ -33,6 +33,8 @@ Key Features:
 
 User Accounts: ConcertHub allows users to create personal accounts, enabling them to have a personalized experience on the platform. Users can access their account information, view ticket purchase history, and manage their payment methods.
 
+User Status: Tired of constanly losing ticket war? with user Status privilege Users didnt have to worry of not getting the tickets to the concert of their favorite performer. With privilege status, user can also book an accomodation of hotel or villa at the city which the concert will be held
+
 Account Balance: Users can top up their ConcertHub account balance using two popular Indonesian payment methods: Gopay and BCA bank balance. This balance acts as a virtual currency that users can utilize to buy concert tickets directly from the platform.
 
 Ticket Listings: ConcertHub offers an extensive selection of concert tickets from various genres and artists. Users can explore upcoming concerts, view detailed event information, such as venue, date, and ticket pricing, and make informed decisions on their ticket purchases.
