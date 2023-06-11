@@ -52,12 +52,12 @@ This table is used to store user information when registering on the website.
 ```
 1. user_id
 2. status_user
-3. password
-4. email
-5. no_telpon
-6. balance_BCA
-7. balance_GOPAY
-8. Order_id
+3. username
+4. password
+5. email
+6. no_telpon
+7. balance_BCA
+8. balance_GOPAY
 ```
 
 ### 2.  ```Performer```
@@ -69,62 +69,55 @@ This table is used to get Performer information on the website.
 4. deskripsi
 ```
 
-### 3.  ```Account```
-This table is used to store doctors and patients account information. 
-```
-1. Account_ID
-2. Email
-3. Password
-4. Role
-```
-
-### 4.  ```Konser```
+### 3.  ```Konser```
 This table is used to store Concert information for user to choose.
 ```
 1. konser_id
-2. perfomer_id
-3. nama_perfomer
-4. tanggal_perform
-5. harga_tiket
+2. harga_tiket
+3. nama_konser
+4. perfomer_id
+5. tanggal_perform
 6. kota_perform
 7. venue
 8. kapasitas
 9. kapasitas_privilege
-10. deskripsi
+10. rating
+11. deskripsi
 ```
 
-### 5.  ```Accommodation```
-This table is used to store Accommodation information when users order ticket.
-```
-1. Kota_perform
-2. jenis_Accommodation
-3. Harga_Accommodation
-```
-
-### 6.  ```order```
+### 5.  ```order_ticket```
 This table is used to store order information from users.
 ```
-1. user_id
-2. order_id
-3. Konser_id
+1. order_id
+2. Konser_id
+3. user_id
 4. nama_pemesan
 5. no_telpon
 6. email
 7. status_order
 8. jenis_accomodation
 9. jumlah_payment
-10. metode_pembayaran
 ```
 
 
-### 7.  ```Review```
+### 6.  ```Review```
 This table is used to store Review by users.
 ```
-1. user_id
+1. review_id
 2. konser_id
 3. rating
 4. komen
 5. review_date
+```
+
+### 6.  ```Enum List```
+This is all enum value used in this project
+```
+1. user_status
+2. kota_perform
+3. status_order
+4. jenis_accomodation
+5. metode_pembayaran
 ```
 
 # UML
